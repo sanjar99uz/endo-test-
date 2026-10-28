@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endodontiya Testlari</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-lg sm:text-xl font-bold text-center sm:text-left">🦷 Endodontiya Testlari</h1>
+            <div id="timer-box" class="bg-indigo-900 px-4 py-2 rounded-xl font-mono text-base sm:text-lg font-semibold flex items-center gap-2 shadow-inner hidden">
+                ⏳ Qolgan vaqt: <span id="time-display">50:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-6 bg-white rounded-2xl shadow-xl flex-grow">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center py-10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-indigo-700 mb-4">Bilimingizni sinovdan o‘tkazing!</h2>
+            <p class="text-slate-600 mb-6 max-w-lg mx-auto leading-relaxed">
+                Ushbu test 52 ta savoldan iborat bo‘lib, jami <span class="font-bold text-indigo-600">50 daqiqa</span> vaqt ajratilgan.
+            </p>
+            
+            <div id="name-input-container" class="max-w-sm mx-auto mb-6 text-left">
+                <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-2">Ism va Familiyangizni kiriting:</label>
+                <input type="text" id="student-name" placeholder="Masalan: Alisher Valiyev" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-2">
+                <p id="name-error" class="text-rose-500 text-sm hidden">Iltimos, ism va familiyangizni kiriting!</p>
+            </div>
+
+            <button id="start-btn" type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                Testni boshlash 🚀
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 text-sm text-slate-500 font-semibold border-b pb-3 gap-2">
+                <span id="question-counter">Savol: 1 / 52</span>
+                <div class="flex items-center gap-4">
+                    <button type="button" onclick="togglePalette()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1 rounded-lg text-xs font-bold border">
+                        📋 Savollar paneli
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Palette Drawer / Modal -->
+            <div id="palette-modal" class="hidden mb-6 p-4 bg-slate-100 rounded-xl border">
+                <p class="text-xs font-bold text-slate-600 mb-2">Savollar ro'yxati (o'tish uchun bosing):</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-40 overflow-y-auto p-1">
+                    <!-- Dynamic Grid Buttons -->
+                </div>
+            </div>
+
+            <div id="question-container" class="mb-6">
+                <h3 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 mb-4 leading-relaxed"></h3>
+                <div id="options-container" class="space-y-3">
+                    <!-- Options injected here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex flex-wrap justify-between items-center mt-8 pt-4 border-t gap-3">
+                <button id="prev-btn" type="button" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-5 py-2.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Oldingi
+                </button>
+                
+                <button type="button" onclick="confirmFinish()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold px-4 py-2 rounded-xl text-sm">
+                    Yakunlash 🏁
+                </button>
+
+                <button id="next-btn" type="button" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow">
+                    Keyingi →
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden text-center py-8">
+            <h2 class="text-3xl font-extrabold text-indigo-700 mb-4">🎉 Test yakunlandi!</h2>
+            <div class="bg-indigo-50 p-6 rounded-2xl max-w-md mx-auto mb-6 shadow-inner text-left space-y-3">
+                <p class="text-center text-lg text-slate-700 font-bold mb-4 border-b border-indigo-200 pb-2">Umumiy hisobot</p>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Talaba:</span> <span id="res-student-name" class="font-bold text-indigo-700"></span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Umumiy savollar:</span> <span id="res-total" class="font-bold text-indigo-700">0</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilandi:</span> <span id="res-attempted" class="font-bold text-blue-600">0</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">To'g'ri javoblar:</span> <span id="res-correct" class="font-bold text-emerald-600">0</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Noto'g'ri javoblar:</span> <span id="res-incorrect" class="font-bold text-rose-600">0</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilanmagan (o'tkazib yuborilgan):</span> <span id="res-unanswered" class="font-bold text-slate-500">0</span></div>
+                <div class="mt-4 pt-4 border-t border-indigo-200 text-center">
+                    <p id="final-percentage" class="text-2xl font-black text-indigo-600">Foiz: 0%</p>
+                </div>
+            </div>
+            <div class="flex justify-center items-center">
+                <button id="tg-close-btn" type="button" onclick="closeApp()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl shadow transition transform hover:scale-105 w-full sm:w-auto">
+                    Chiqish (Yopish) 🚪
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-slate-400 text-xs sm:text-sm border-t bg-white">
+        Endodontiya bo‘yicha interaktiv test platformasi.
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const quizData = [
+            {
+                q: "Endodontik asboblarni standartlashtirish qaysi xalqaro tashkilot tizimi bo'yicha amalga oshiriladi?",
+                options: ["FDI tizimi", "JSST (Jahon sog'liqni saqlash tashkiloti)", "GOST tizimi", "ISO (ISO 3630) tizimi"],
+                answer: 3
+            },
+            {
+                q: "Asbob dastasidagi qora rang ISO standartiga ko'ra qaysi o'lchamlarni anglatadi?",
+                options: ["10 yoki 90", "20 yoki 50", "40 yoki 80", "15 yoki 45"],
+                answer: 2
+            },
+            {
+                q: "H-fayl (Hedstrom fayli) asbobining dastasida qanday shartli belgi tasvirlangan bo'ladi?",
+                options: ["Kvadrat", "Yulduzcha", "Uchburchak", "Aylana"],
+                answer: 3
+            },
+            {
+                q: "K-fayl asbobi dastasidagi qaysi geometrik shakl uning turi va kesimini bildiradi?",
+                options: ["Sakkizburchak", "Uchburchak", "Kvadrat", "Aylana"],
+                answer: 2
+            },
+            {
+                q: "Endodontik asboblar bemorda ishlatilgandan so'ng eng birinchi navbatda qanday jarayondan o'tkazilishi shart?",
+                options: ["Quruq isituvchi shkafda qizdirish", "Mexanik yuvish va cho'tkalash", "Avtoklavga solish", "Dezinfeksiyalovchi eritmaga ivitish (Dezinfeksiya)"],
+                answer: 3
+            },
+            {
+                q: "Zamonaviy stomatologiyada endodontik asboblarni sterilizatsiya qilishning eng ishonchli usuli qaysi?",
+                options: ["Ochiq olovda qizdirish", "Spirt bilan artish", "Qaynatish", "Avtoklavlash (bosim ostida bug' bilan)"],
+                answer: 3
+            },
+            {
+                q: "Glasiperlen (sharikli) sterilizatorda mayda endodontik asboblar ishchi qismi necha daraja haroratda sterilizatsiya qilinadi?",
+                options: ["120-150°C da (1 soat)", "100°C da (10 daqiqa)", "230-250°C da (bir necha soniya)", "60-80°C da (5 daqiqa)"],
+                answer: 2
+            },
+            {
+                q: "Sterilizatsiya oldi tozalash sifatini, ya'ni asbobda qon qoldiqlari qolmaganligini tekshirish uchun qanday sinama o'tkaziladi?",
+                options: ["Fenolftalein sinamasi", "Lakmus sinamasi", "Azopiram sinamasi", "Yod sinamasi"],
+                answer: 2
+            },
+            {
+                q: "Yuqori jag' markaziy kurak tishlarining ildiz kanali odatda nechta bo'ladi?",
+                options: ["1 ta keng va to'g'ri kanal", "3 ta kavisli kanal", "2 ta ingichka kanal", "4 ta murakkab kanal"],
+                answer: 0
+            },
+            {
+                q: "Tish bo'shlig'i (cavum dentis) anatomik jihatdan qaysi bo'limlarga bo'linadi?",
+                options: ["Faqat tish toji bo'shlig'i", "Pulpa shoxi va apikal teshik", "Tish toji bo'shlig'i va ildiz kanallari", "Faqat ildiz kanallari"],
+                answer: 2
+            },
+            {
+                q: "Ko'pincha qaysi tishning bitta ildizida dahliz (vestibulyar) va tanglay (palatinal) nomli 2 ta kanal uchraydi?",
+                options: ["Yuqori jag' qoziq tishida", "Pastki jag' markaziy kurak tishida", "Pastki jag' qoziq tishida", "Yuqori jag' 1-kichik oziq (premolyar) tishida"],
+                answer: 3
+            },
+            {
+                q: "Pastki jag' 1-katta oziq (molyar) tishida ko'pincha nechta ildiz kanali bo'ladi?",
+                options: ["5 ta", "2 ta (ikkalasi ham distal ildizda)", "Faqat 1 ta", "3 ta (ba'zan 4 ta)"],
+                answer: 3
+            },
+            {
+                q: "Yuqori va pastki jag' kurak tishlari bo'shlig'ini ochish asosan qaysi yuza orqali amalga oshiriladi?",
+                options: ["Bo'yin qismidan", "Kesuvchi qirrasidan", "Tanglay yoki til (oral) yuzasidan", "Dilyuz (vestibulyar) yuzasidan"],
+                answer: 2
+            },
+            {
+                q: "Kichik va katta oziq (premolyar va molyar) tishlarning pulpa kamerasi qaysi yuza orqali ochiladi?",
+                options: ["Til yuzasidan", "Faqat kontakt yuzasidan", "Dilyuz (vestibulyar) yuzasidan", "Chaynov yuzasidagi chuqurchadan (fissura)"],
+                answer: 3
+            },
+            {
+                q: "Tish toji bo'shlig'i tomini (gumbazini) xavfsiz olib tashlash va devorlarni tekislash uchun qanday bor ishlatiladi?",
+                options: ["Sharsimon (yoki xavfsiz uchli endodontik fissur bor)", "G'ildiraksimon bor", "To'g'ri konusli qattiq qotishmali bor", "Zond va ekskavator"],
+                answer: 0
+            },
+            {
+                q: "Endodontik ishlov berish uchun tish bo'shlig'i to'g'ri ochilganligining asosiy belgisi nima?",
+                options: ["Pulpa kamerasida qon qolmasligi", "Endodontik asboblar kanalga to'siqsiz, egilmasdan to'g'ri kirishi", "Kanal og'zini faqat mikroskopda ko'rinishi", "Tish tojining barcha devorlari kesib tashlanishi"],
+                answer: 1
+            },
+            {
+                q: "Ildiz kanalidan yumshoq pulpa to'qimasini butunligicha o'rab, sug'urib olish uchun mo'ljallangan asbob nima deb ataladi?",
+                options: ["K-rimer", "Spreader", "Gates-Glidden bori", "Pulpoekstraktor"],
+                answer: 3
+            },
+            {
+                q: "Pulpoekstraktor ishchi qismining tuzilishi qanday xususiyatga ega?",
+                options: ["Silliq va to'mtoq uchli konus", "Kvadrat kesimli arrasimon sim", "Asosiy simiga nisbatan o'tkir burchak ostida yo'nalgan tishchalari (tikanlari) bor", "Buralgan uchburchakli sim"],
+                answer: 2
+            },
+            {
+                q: "Kanal ichida pulpani ilib olish uchun pulpoekstraktorni necha gradusga atrofida burash tavsiya etiladi?",
+                options: ["Tez va uzluksiz aylanma harakat qilinadi", "To'liq 360 gradusga va undan ko'p", "Burish mumkin emas, faqat yuqori-pastga qilinadi", "90-180 gradusga (yarim aylana)"],
+                answer: 3
+            },
+            {
+                q: "Parchalangan (nekrozlangan) pulpa qoldiqlari va infeksiyalangan dentinni qirib tozalash uchun qaysi asbob pulpoekstraktordan ko'ra samaraliroq?",
+                options: ["H-fayl (Hedstrom fayli)", "Lentulo kanalto'ldirgichi", "Plugger", "Zond"],
+                answer: 0
+            },
+            {
+                q: "Ildiz kanalini asosan burash (aylanma) harakatlari orqali kengaytirish uchun mo'ljallangan asbob qaysi?",
+                options: ["K-Rimer (K-Reamer)", "H-Fayl", "Peeso Reamer", "K-Fayl"],
+                answer: 0
+            },
+            {
+                q: "K-fayl (K-file) asbobining ishlash jarayonidagi asosiy harakati qanday bo'lishi kerak?",
+                options: ["Yuqoriga-pastga (arra kabi) qirish va qisman aylanma harakat", "Asbobni joyida qizdirib kengaytirish", "Kanalga bosim bilan sanchish", "Faqat uzluksiz 360 gradus aylanma harakat"],
+                answer: 0
+            },
+            {
+                q: "Kanalning og'iz (tojga yaqin) qismini kengaytirish va unga kirishni osonlashtirish uchun qaysi mashina asbobi ishlatiladi?",
+                options: ["Pulpoekstraktor", "Apekslokator", "Spreader", "Gates-Glidden bori"],
+                answer: 3
+            },
+            {
+                q: "Peeso Reamer (Largo) asbobining asosiy vazifasi nima?",
+                options: ["Kanalni yuvish", "Pulpani extirpatsiya qilish", "Kanalning to'g'ri qismini kengaytirish va shtiftlar (kistiklar) uchun joy tayyorlash", "Kanal uchini (apeksni) topish"],
+                answer: 2
+            },
+            {
+                q: "Qiyshiq va egri kanallarda asbob sinishi va kanal shakli buzilishining oldini olish uchun qanday qotishmadan yasalgan fayllar qo'llaniladi?",
+                options: ["Alyuminiy va mis qotishmalari", "Nikel-Titan (NiTi) qotishmali egiluvchan fayllar", "Sof zanglamaydigan qattiq po'lat", "Uglerodli po'lat"],
+                answer: 1
+            },
+            {
+                q: "Kalsifikatsiyalangan (ohaklanib toraygan) va juda tor kanallarni birlamchi ochish va o'tish uchun qaysi maxsus fayllardan foydalaniladi?",
+                options: ["ProTaper Finish fayllari", "Katta o'lchamli H-fayllar", "C-Pilot (yoki C+ fayl, Pathfile) asboblari", "Lentulo spiralsimon asbobi"],
+                answer: 2
+            },
+            {
+                q: "Xotira shakliga (shape memory) ega, egrilikdan so'ng yana o'z holiga qaytuvchi zamonaviy mashina asboblari tizimlaridan biri qaysi?",
+                options: ["Spreaderlar", "Oddiy K-rimerlar", "Gates-Glidden", "ProTaper, ProFile"],
+                answer: 3
+            },
+            {
+                q: "K-Flexofile kabi moslashuvchan asboblar standart K-fayllardan nimasi bilan farq qiladi?",
+                options: ["Kesimi to'rtburchak bo'lib, qattiqligi bilan", "Uchining o'tkir ignasimonligi bilan", "Kesimi uchburchak bo'lib, o'ta egiluvchanligi bilan", "Tishchalari juda yirikligi bilan"],
+                answer: 2
+            },
+            {
+                q: "Kanal devorlaridagi qattiq dentin qatlamini yumshatish (kimyoviy kengaytirish) uchun qaysi modda asosidagi preparatlar qo'llaniladi?",
+                options: ["Ftorli laklar", "Natriy gipoxlorit", "EDTA (Etilendiamintetra sirka kislotasi)", "Xlorgeksidin"],
+                answer: 2
+            },
+            {
+                q: "Surtma (gel) ko'rinishidagi EDTA preparatlariga yana qanday moddalar qo'shiladi va ularning vazifasi nima?",
+                options: ["Karbamid peroksid va moylovchi moddalar (asbobning oson siljishini ta'minlaydi)", "Faqat antibiotiklar (infeksiyani darhol o'ldiradi)", "Sink oksidi (kanalni plombalaydi)", "Kalsiy gidroksid (suyakni o'stiradi)"],
+                answer: 0
+            },
+            {
+                q: "EDTA asosidagi gel yordamida kanalni kimyoviy kengaytirish o'rtacha qancha vaqt talab etadi (asbob bilan ishlash jarayonida)?",
+                options: ["Darhol yuvib tashlanadi (1-2 soniya)", "O'rtacha 1-3 daqiqa", "24 soatga qoldiriladi", "Kamida 30-40 daqiqa"],
+                answer: 1
+            },
+            {
+                q: "Kimyoviy kengaytirish vositalarining ta'sir mexanizmi qanday?",
+                options: ["Dentin tarkibidagi kalsiy ionlarini o'ziga biriktirib olib, to'qimani yumshatadi (xelat hosil qilish)", "Kanal devorlariga sun'iy emal qatlamini yopishtiradi", "Pulpani to'liq eritib yuboradi", "Dentindagi qon tomirlarni kuydiradi"],
+                answer: 0
+            },
+            {
+                q: "Endodontiyada 'ishchi uzunlik' qayerdan qayergacha bo'lgan masofa hisoblanadi?",
+                options: ["Tish tojidagi mo'ljal nuqtadan kanalning apikal torayish qismigacha (fiziologik apeksgacha)", "Tish bo'ynidan rentgenologik apeksgacha", "Pulpa kamerasidan bifurkatsiyagacha", "Tishning butun umumiy uzunligi (toj bilan birga)"],
+                answer: 0
+            },
+            {
+                q: "Zamonaviy stomatologiyada kanalning ishchi uzunligini aniq ko'rsatib beruvchi elektron asbob qanday nomlanadi?",
+                options: ["Pulpo-tester (EOD)", "Kofardam", "Apekslokator", "Fiziodispenser"],
+                answer: 2
+            },
+            {
+                q: "Rentgenologik usulda ishchi uzunlikni o'lchashda kanalga nima kiritilgan holatda rasmga olinadi?",
+                options: ["Lentulo asbobi va pasta", "Oddiy paxta pilta", "Rentgenokontrast endodontik asbob (masalan, K-fayl 15-o'lcham)", "Faqat suv"],
+                answer: 2
+            },
+            {
+                q: "Elektron apekslokatordan foydalanishda xato (noto'g'ri) natija chiqishiga nima sabab bo'lishi mumkin?",
+                options: ["Kanal to'liq quruq bo'lishi", "Asbobning to'g'ri tanlanishi", "Tishning frontaldan joylashishi", "Kanalda ko'p miqdorda qon, yiring yoki natriy gipoxlorit to'planib qolishi"],
+                answer: 3
+            },
+            {
+                q: "Apikal-koronal (Step-back) usulining asosiy mohiyati nimada?",
+                options: ["Kanalni yuqoridan boshlab pastga qarab toraytirib borish", "Kanal ishlov berishni apikal uchdan boshlab, asbob o'lchamini kattalashtirib toj tomonga qarab borish", "Kanalni faqat mashina asboblari bilan kengaytirish", "Kanalni qalin asboblar bilan to'g'ridan-to'g'ri apeksgacha kirish"],
+                answer: 1
+            },
+            {
+                q: "Step-back texnikasida apikal sohani to'liq tozalab shakllantirgan eng so'nggi o'lchamdagi asbob qanday nomlanadi?",
+                options: ["Master-fayl (Asosiy fayl)", "K-rimer", "Pathfile", "Gates-glidden"],
+                answer: 0
+            },
+            {
+                q: "Step-back usulida navbatdagi har bir kattaroq raqamli asbob oldingisiga nisbatan qancha masofaga qisqaroq kiritiladi?",
+                options: ["Xuddi o'sha uzunlikda (qisqartirilmaydi)", "1 mm ga qisqaroq", "5 mm ga qisqaroq", "3 mm ga qisqaroq"],
+                answer: 1
+            },
+            {
+                q: "Step-back usulida kanalda qirindi tiqilib qolmasligi va tiqin (probka) hosil bo'lmasligi uchun nima qilinadi?",
+                options: ["Asbob kattalashtirilmasdan faqat kuch bilan itariladi", "Kanal faqat quritiladi", "Yuvish shart emas, quruq holda kengaytiriladi", "Har bir asbobdan so'ng kanal mo'l-ko'l yuviladi (irrigatsiya) va yana master-fayl bilan tekshiriladi"],
+                answer: 3
+            },
+            {
+                q: "Koronal-apikal (Crown-down) usulining asosiy prinsipi nimadan iborat?",
+                options: ["Faqat qo'l asboblari bilan aylanma harakat qilish", "Kengaytirishni apikal uchidan toj qismiga qarab olib borish", "Kengaytirishni kanalning toj qismidan boshlab, kattadan kichik o'lchamdagi asboblarga o'tib, apeksga qarab yurish", "O'lchami kichikdan kattaga qarab ketma-ket ishlatish"],
+                answer: 2
+            },
+            {
+                q: "Crown-down texnikasining eng asosiy va muhim afzalligi nimada?",
+                options: ["Asboblar faqat arzon zanglamaydigan po'latdan iborat", "Ildiz kanali umuman kengaytirilmaydi", "Infeksiyalangan massa (qirindi) kanal yuqorisidan apikal teshik orqali periapik to'qimalarga itarilib ketmaydi", "Ishchi uzunlikni o'lchash talab etilmaydi"],
+                answer: 2
+            },
+            {
+                q: "Crown-down usulida asosan qanday zamonaviy endodontik tizimlar keng qo'llaniladi?",
+                options: ["Pulpoekstraktorlar", "Gates-Glidden va H-fayllar", "Standart K-rimerlar", "Aylanuvchi NiTi (Nikel-Titan) mashina asboblari (ProTaper, ProFile)"],
+                answer: 3
+            },
+            {
+                q: "ProTaper asboblari (Crown-down uchun) tizimidagi S (Shaping) fayllarning vazifasi nima?",
+                options: ["Tish bo'shlig'i tomini ochish", "Kanalning koronal (toj) va o'rta qismlarini shakllantirish va kengaytirish", "Kanalni plombalash", "Faqat apeks qismini tugatuvchi ishlov berish"],
+                answer: 1
+            },
+            {
+                q: "Endodontiyada pulpa qoldiqlarini erituvchi, keng spektrli eng yaxshi yuvuvchi (irrigant) eritma qaysi?",
+                options: ["3% li Vodorod peroksidi", "3-5,25% li Natriy gipoxlorit eritmasi", "Distillangan suv", "0,9% li Natriy xlorid"],
+                answer: 1
+            },
+            {
+                q: "Irrigatsiya vaqtida eritma apikal teshikdan chiqib ketmasligi va xavfsiz bo'lishi uchun maxsus endodontik ignaning tuzilishi qanday bo'ladi?",
+                options: ["Juda keng va kalta bo'ladi", "Uchi to'mtoq (yopiq) va yon tomonida tirqishi (teshigi) bo'ladi", "Hech qanday teshigi bo'lmaydi", "Uchi o'tkir, ignasimon qirqilgan bo'ladi"],
+                answer: 1
+            },
+            {
+                q: "Agar tish kanalida surunkali infeksiya (masalan, chidamli Enterococcus faecalis) bo'lsa, natriy gipoxloritdan tashqari qaysi kuchli antiseptik yuvish uchun tavsiya etiladi?",
+                options: ["Novokain", "Furatsilin eritmasi", "Yod eritmasi", "2% li Xlorgeksidin eritmasi"],
+                answer: 3
+            },
+            {
+                q: "Kanalni uzoq muddatli (kunlar-haftalar) antiseptik ishlov berish va yallig'lanishni kamaytirish maqsadida vaqtincha nima bilan to'ldiriladi?",
+                options: ["Sink-fosfat sementi bilan", "Suyuq kompozit bilan", "Kalsiy gidroksid asosidagi pastalar bilan", "Amalgama bilan"],
+                answer: 2
+            },
+            {
+                q: "Guttapercha shtiftlarini sovuq lateral (yonlama) zichlash texnikasida qaysi qo'l asbobi qo'llaniladi?",
+                options: ["K-rimer", "Spreader (Spreder)", "Plugger (Plagger)", "Lentulo"],
+                answer: 1
+            },
+            {
+                q: "Spreader asbobining tuzilishi qanday va uning asosiy vazifasi nima?",
+                options: ["Uchi to'mtoq silindr bo'lib, ashyoni vertikal ezadi", "Spiralsimon bo'lib, pastani kanalga aylanib kiritadi", "Tishchalari bo'lib, kanaldagi ortiqcha guttaperchani kesib oladi", "Silliq, uchi o'tkir tugaydigan konus shaklida bo'lib, guttaperchani kanal devoriga yonlama itarib zichlaydi"],
+                answer: 3
+            },
+            {
+                q: "Guttaperchani qizdirib vertikal kondensatsiya (zichlash) qilish uchun qaysi to'mtoq uchli asbobdan foydalaniladi?",
+                options: ["H-fayl", "Spreader", "Pulpoekstraktor", "Plugger (Plagger)"],
+                answer: 3
+            },
+            {
+                q: "Siler (plombalovchi pasta yoki sement)ni kanal ichiga kiritish va devorlarga surtish uchun qaysi mashina asbobi qulay hisoblanadi?",
+                options: ["Peeso Reamer", "Zond", "Gates-Glidden", "Kana to'ldiruvchi (Lentulo)"],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let timerInterval;
+        let timeLeft = 50 * 60; 
+        let studentName = "";
+
+        const BOT_TOKEN = "9273368953:AAHal0mt4or4yWknum8DoLiJ1zDy4E-2RrQ"; 
+        const CHAT_ID = "840168462"; 
+
+        // Telegram xavfsiz boshqarish (oddiy brauzerda ham xato bermasligi uchun)
+        const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+        if (tg && tg.expand) {
+            tg.expand();
+        }
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionCounter = document.getElementById('question-counter');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const timeDisplay = document.getElementById('time-display');
+        const timerBox = document.getElementById('timer-box');
+        const paletteModal = document.getElementById('palette-modal');
+        const paletteGrid = document.getElementById('palette-grid');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function randomizeQuiz() {
+            shuffleArray(quizData);
+            quizData.forEach(q => {
+                const correctText = q.options[q.answer];
+                shuffleArray(q.options);
+                q.answer = q.options.indexOf(correctText);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            randomizeQuiz();
+            if (startBtn) {
+                startBtn.addEventListener('click', startQuiz);
+            }
+            buildPalette();
+        });
+
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            const errorMsg = document.getElementById('name-error');
+            
+            if(nameInput.length < 3) {
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            
+            errorMsg.classList.add('hidden');
+            studentName = nameInput;
+
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            timerBox.classList.remove('hidden');
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz();
+                    return;
+                }
+                timeLeft--;
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            paletteGrid.innerHTML = '';
+            for (let i = 0; i < quizData.length; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = i + 1;
+                btn.className = `w-7 h-7 rounded text-xs font-bold border flex items-center justify-center transition ${
+                    userAnswers[i] !== null ? 'bg-indigo-100 border-indigo-400 text-indigo-700' : 'bg-white border-slate-300 text-slate-700'
+                }`;
+                btn.onclick = () => jumpToQuestion(i);
+                paletteGrid.appendChild(btn);
+            }
+        }
+
+        function updatePaletteStyles() {
+            const buttons = paletteGrid.children;
+            for (let i = 0; i < buttons.length; i++) {
+                if (i === currentQuestion) {
+                    buttons[i].className = `w-7 h-7 rounded text-xs font-bold border-2 border-indigo-600 bg-indigo-600 text-white flex items-center justify-center`;
+                } else if (userAnswers[i] !== null) {
+                    buttons[i].className = `w-7 h-7 rounded text-xs font-bold border border-indigo-400 bg-indigo-100 text-indigo-700 flex items-center justify-center`;
+                } else {
+                    buttons[i].className = `w-7 h-7 rounded text-xs font-bold border border-slate-300 bg-white text-slate-700 flex items-center justify-center`;
+                }
+            }
+        }
+
+        function togglePalette() {
+            paletteModal.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestion = index;
+            paletteModal.classList.add('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
+            questionCounter.textContent = `Savol: ${currentQuestion + 1} / ${quizData.length}`;
+            
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `option-btn w-full text-left p-3.5 rounded-xl border border-slate-200 font-medium text-slate-700 bg-white shadow-sm`;
+                btn.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+                
+                if (userAnswers[currentQuestion] === index) {
+                    btn.className += ` bg-indigo-100 border-indigo-500 text-indigo-800 font-bold`;
+                }
+                
+                btn.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'Natijani ko‘rish 🏁' : 'Keyingi →';
+            updatePaletteStyles();
+        }
+
+        function selectAnswer(selectedIndex) {
+            userAnswers[currentQuestion] = selectedIndex;
+            
+            const buttons = optionsContainer.children;
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].className = `option-btn w-full text-left p-3.5 rounded-xl border border-slate-200 font-medium text-slate-700 bg-white shadow-sm`;
+                if (i === selectedIndex) {
+                    buttons[i].className += ` bg-indigo-100 border-indigo-500 text-indigo-800 font-bold`;
+                }
+            }
+
+            updatePaletteStyles();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function confirmFinish() {
+            if (confirm("Haqiqatan ham testni yakunlamoqchimisiz?")) {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            quizScreen.classList.add('hidden');
+            timerBox.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            let correctCount = 0;
+            let attemptedCount = 0;
+            for(let i=0; i<quizData.length; i++) {
+                if(userAnswers[i] !== null) {
+                    attemptedCount++;
+                    if(userAnswers[i] === quizData[i].answer) {
+                        correctCount++;
+                    }
+                }
+            }
+            
+            let incorrectCount = attemptedCount - correctCount;
+            let unansweredCount = quizData.length - attemptedCount;
+            let percentage = Math.round((correctCount / quizData.length) * 100);
+
+            document.getElementById('res-student-name').textContent = studentName;
+            document.getElementById('res-total').textContent = quizData.length;
+            document.getElementById('res-attempted').textContent = attemptedCount;
+            document.getElementById('res-correct').textContent = correctCount;
+            document.getElementById('res-incorrect').textContent = incorrectCount;
+            document.getElementById('res-unanswered').textContent = unansweredCount;
+            document.getElementById('final-percentage').textContent = `O'zlashtirish foizi: ${percentage}%`;
+
+            // Telegram botga yuborish
+            sendToTelegram(studentName, correctCount, incorrectCount, unansweredCount, percentage);
+        }
+
+        function sendToTelegram(name, correct, incorrect, unanswered, percentage) {
+            const text = `🎓 Yangi natija: %0A👤 Talaba: <b>${name}</b> %0A✅ To'g'ri: ${correct} %0A❌ Noto'g'ri: ${incorrect} %0A⚪ Belgilanmagan: ${unanswered} %0A📊 Foiz: <b>${percentage}%</b>`;
+            
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}&parse_mode=html`;
+            
+            fetch(url, { mode: 'no-cors' })
+                .then(() => {
+                    console.log("Natija yuborildi");
+                })
+                .catch(err => {
+                    const img = new Image();
+                    img.src = url;
+                });
+        }
+
+        function closeApp() {
+            if (tg && tg.close) {
+                tg.close();
+            } else {
+                window.close();
+            }
+        }
+    </script>
+</body>
+</html>
