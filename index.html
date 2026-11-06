@@ -10,12 +10,21 @@
         <style>
             /* MATNNI NUSXALASHNI (COPY) VA TANLASHNI TAQIQLASH */
             body {
-                -webkit-touch-callout: none; /* iOS Safari */
-                -webkit-user-select: none; /* Safari */
-                -khtml-user-select: none; /* Konqueror HTML */
-                -moz-user-select: none; /* Old versions of Firefox */
-                -ms-user-select: none; /* Internet Explorer/Edge */
-                user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* input maydonlarida yozishga ruxsat berish */
+            input, textarea {
+                -webkit-user-select: auto !important;
+                -khtml-user-select: auto !important;
+                -moz-user-select: auto !important;
+                -ms-user-select: auto !important;
+                user-select: auto !important;
             }
 
             .option-btn {
@@ -26,7 +35,6 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             }
 
-            /* EKRANNI QORAYTIRISH UCHUN BLUR (Agar blur qo'llanilsa) */
             .secure-mode {
                 filter: blur(0px);
             }
@@ -34,7 +42,6 @@
     </head>
     <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans" oncontextmenu="return false;">
 
-        <!-- Header -->
         <header class="bg-teal-600 text-white shadow-md sticky top-0 z-50">
             <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <h1 class="text-lg sm:text-xl font-bold text-center sm:text-left">🦷 Profilaktika Testlari</h1>
@@ -44,7 +51,6 @@
             </div>
         </header>
 
-        <!-- Main Container -->
         <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-6 bg-white rounded-2xl shadow-xl flex-grow secure-mode">
             
             <!-- Start Screen -->
@@ -57,7 +63,7 @@
                 
                 <div id="name-input-container" class="max-w-sm mx-auto mb-6 text-left">
                     <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-2">Ism va Familiyangizni kiriting:</label>
-                    <input type="text" id="student-name" placeholder="Masalan: Alisher Valiyev" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-2">
+                    <input type="text" id="student-name" placeholder="Masalan: Alisher Valiyev" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-2" required>
                     <p id="name-error" class="text-rose-500 text-sm hidden">Iltimos, ism va familiyangizni kiriting!</p>
                 </div>
 
@@ -77,22 +83,16 @@
                     </div>
                 </div>
 
-                <!-- Question Palette Drawer / Modal -->
                 <div id="palette-modal" class="hidden mb-6 p-4 bg-slate-100 rounded-xl border">
                     <p class="text-xs font-bold text-slate-600 mb-2">Savollar ro'yxati (o'tish uchun bosing):</p>
-                    <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-40 overflow-y-auto p-1">
-                        <!-- Dynamic Grid Buttons -->
-                    </div>
+                    <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-40 overflow-y-auto p-1"></div>
                 </div>
 
                 <div id="question-container" class="mb-6">
                     <h3 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 mb-4 leading-relaxed"></h3>
-                    <div id="options-container" class="space-y-3">
-                        <!-- Options injected here -->
-                    </div>
+                    <div id="options-container" class="space-y-3"></div>
                 </div>
 
-                <!-- Navigation Buttons -->
                 <div class="flex flex-wrap justify-between items-center mt-8 pt-4 border-t gap-3">
                     <button id="prev-btn" type="button" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-5 py-2.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
                         ← Oldingi
@@ -118,70 +118,61 @@
                     <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilandi:</span> <span id="res-attempted" class="font-bold text-blue-600">0</span></div>
                     <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">To'g'ri javoblar:</span> <span id="res-correct" class="font-bold text-emerald-600">0</span></div>
                     <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Noto'g'ri javoblar:</span> <span id="res-incorrect" class="font-bold text-rose-600">0</span></div>
-                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilanmagan (o'tkazib yuborilgan):</span> <span id="res-unanswered" class="font-bold text-slate-500">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilanmagan:</span> <span id="res-unanswered" class="font-bold text-slate-500">0</span></div>
                     <div class="mt-4 pt-4 border-t border-teal-200 text-center">
                         <p id="final-percentage" class="text-2xl font-black text-teal-600">Foiz: 0%</p>
                     </div>
                 </div>
-                <div class="flex justify-center items-center">
+
+                <!-- Batafsil Javoblar Qismi (YANGI) -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                    <button id="toggle-review-btn" type="button" onclick="toggleReview()" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold px-6 py-3 rounded-xl shadow transition w-full sm:w-auto">
+                        Batafsil javoblarni ko'rish 📄
+                    </button>
+                    
                     <button id="tg-close-btn" type="button" onclick="closeApp()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl shadow transition transform hover:scale-105 w-full sm:w-auto">
                         Chiqish (Yopish) 🚪
                     </button>
                 </div>
+
+                <div id="review-container" class="mt-6 text-left hidden w-full max-w-2xl mx-auto space-y-2 max-h-96 overflow-y-auto p-4 bg-white rounded-xl shadow border border-slate-200 text-sm">
+                    <!-- Javascript orqali to'ldiriladi -->
+                </div>
+
             </div>
 
         </main>
 
         <script>
-            // TELEGRAM XAVFSIZLIK SOZLAMALARI
             const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
             if (tg) {
                 tg.expand();
-                
-                // 1. Matn hajmini barqaror qilish
                 document.documentElement.style.setProperty('--tg-viewport-height', window.innerHeight + 'px');
-                
-                // 2. Skrinshot va ekranni yozib olishni cheklash 
-                // Yangi API parametr (agar Telegram mijozi qo'llab quvvatlasa)
-                if (tg.isVersionAtLeast('6.9')) {
-                     // Ba'zi hollarda tg.Settings orqali ruxsatlarni boshqarish mumkin
-                     tg.setHeaderColor('#0f766e'); 
-                }
-                
-                // Maxsus himoya qatlami - WebApp.ready() ni chaqiramiz
+                if (tg.isVersionAtLeast('6.9')) { tg.setHeaderColor('#0f766e'); }
                 tg.ready();
             }
 
-            // KLAVIATURA TUGMALARINI BLOKLASH (F12, PrintScreen, Ctrl+C)
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'PrintScreen') {
-                    navigator.clipboard.writeText(''); // Buferi tozalash
+                    navigator.clipboard.writeText('');
                     alert("Skrinshot olish taqiqlangan!");
                 }
-                // Ctrl+C, Ctrl+P, F12, Ctrl+Shift+I taqiqlash
                 if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')) {
                     e.preventDefault();
                 }
-                if (e.key === 'F12') {
-                    e.preventDefault();
-                }
+                if (e.key === 'F12') { e.preventDefault(); }
             });
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.addEventListener('dragstart', event => event.preventDefault());
 
-            // TUGMALAR VA SICHQONCHA O'NG TUGMASI BLOKLASH
-            document.addEventListener('contextmenu', event => event.preventDefault()); // Sichqoncha o'ng tugmasi
-            document.addEventListener('dragstart', event => event.preventDefault()); // Matnni tortib olishni bloklash
-
-            // EKRANDAN TASHQARIGA CHIQSA (Fokus yo'qolsa) TESTNI YOPISH YOKI XIRA QILISH
             document.addEventListener('visibilitychange', function() {
                 if (document.visibilityState === 'hidden') {
-                    // Agar talaba boshqa dasturga o'tsa
                     document.body.style.filter = "blur(10px)";
                 } else {
                     document.body.style.filter = "none";
                 }
             });
 
-            // TEST SAVOLLARI (Oldingi kabi, qisqartirilgan ro'yxat bilan, barchasi saqlangan deb faraz qilamiz)
             const quizData = [
                 {
                     q: "Chaqaloqlarda (1 yoshgacha) og'iz bo'shlig'i ko'rigining asosiy maqsadi nima?",
@@ -325,4 +316,14 @@
                 },
                 {
                     q: "Kariyesogen muhit asosan qanday oziq-ovqatlar iste'molidan so'ng paydo bo'ladi?",
-                    options: ["Oqsillar", "Yog'lar", "Oson o'zlashuvchi uglevo
+                    options: ["Oqsillar", "Yog'lar", "Oson o'zlashuvchi uglevodlar (shakar)", "Vitaminlar"],
+                    answer: 2
+                },
+                {
+                    q: "Kariyes rivojlanishida Miller (kimyoviy-parazitar) nazariyasiga ko'ra mikroorganizmlar nima ishlab chiqaradi?",
+                    options: ["Ishqor", "Organik kislotalar (masalan, sut kislotasi)", "Kislorod", "Vodorod"],
+                    answer: 1
+                },
+                {
+                    q: "Kariyesning umumiy e'tirof etilgan, hozirgi zamonaviy nazariyasi (konsepsiyasi) nimalarga asoslangan?",
+                    options: ["Faqat irsiyatga", "Mikroorganizmlar, 
