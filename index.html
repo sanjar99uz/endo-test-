@@ -1,172 +1,696 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Endodontiya — 5-semestr testi</title>
-<style>
-:root{--bg:#eef8f8;--card:#fff;--ink:#12353b;--mut:#5c7c82;--pri:#0e9aa7;--pri2:#0a6f7a;--line:#d3e8ea;--ok:#1a9a5b;--okbg:#e4f6ec;--bad:#d6455d;--badbg:#fdeaee;--sel:#e0f4f6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1b1e;--card:#12282c;--ink:#e3f2f3;--mut:#8fb0b5;--pri:#35c4d1;--pri2:#7fdbe4;--line:#24434a;--ok:#4cd08a;--okbg:#10301f;--bad:#ff7a90;--badbg:#38161e;--sel:#173a40;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0b1b1e;--card:#12282c;--ink:#e3f2f3;--mut:#8fb0b5;--pri:#35c4d1;--pri2:#7fdbe4;--line:#24434a;--ok:#4cd08a;--okbg:#10301f;--bad:#ff7a90;--badbg:#38161e;--sel:#173a40;color-scheme:dark}
-*{box-sizing:border-box}
-html{scroll-padding-top:90px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
-header{background:linear-gradient(135deg,#0a6f7a,#13b5c2);color:#fff;padding:26px 16px 52px;text-align:center}
-header svg{width:54px;height:54px;margin-bottom:6px}
-header h1{margin:0;font-size:1.6rem}
-header p{margin:6px auto 0;max-width:640px;opacity:.92;font-size:.95rem}
-.wrap{max-width:780px;margin:-34px auto 40px;padding:0 14px}
-.bar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:16px}
-.bar .row{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut);margin-bottom:6px}
-.track{height:8px;background:var(--line);border-radius:8px;overflow:hidden}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#13b5c2,#4fd3a6);transition:width .25s}
-h2.sec{margin:26px 4px 10px;font-size:1.05rem;color:var(--pri2);display:flex;align-items:center;gap:8px}
-h2.sec:before{content:"";width:10px;height:10px;border-radius:50% 50% 50% 0;background:var(--pri);transform:rotate(-45deg)}
-.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-.q .t{font-weight:600;margin-bottom:10px}
-.q .t b{color:var(--pri);margin-right:4px}
-.o{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;font:inherit;cursor:pointer;transition:.15s}
-.o:hover{border-color:var(--pri)}
-.o i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.8rem}
-.o.sel{background:var(--sel);border-color:var(--pri)}
-.o.sel i{background:var(--pri);color:#fff}
-.o.ok{background:var(--okbg);border-color:var(--ok)}
-.o.ok i{background:var(--ok);color:#fff}
-.o.bad{background:var(--badbg);border-color:var(--bad)}
-.o.bad i{background:var(--bad);color:#fff}
-.locked .o{cursor:default}
-.exp{display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--sel);border-left:4px solid var(--pri);font-size:.92rem}
-.locked .exp{display:block}
-.exp b{color:var(--pri2)}
-.fin{display:block;margin:26px auto 0;padding:14px 34px;border:0;border-radius:30px;background:linear-gradient(135deg,#0a6f7a,#13b5c2);color:#fff;font:700 1.05rem inherit;font-family:inherit;cursor:pointer;box-shadow:0 6px 16px rgba(14,154,167,.35)}
-.res{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center;margin-bottom:18px}
-.res .ring{width:130px;height:130px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--pri) calc(var(--p)*1%),var(--line) 0)}
-.res .ring span{width:100px;height:100px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:1.7rem;font-weight:800;color:var(--pri2)}
-.res h3{margin:4px 0}
-.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0}
-.stats div{padding:6px 14px;border-radius:20px;font-size:.9rem;font-weight:600}
-.s1{background:var(--okbg);color:var(--ok)}.s2{background:var(--badbg);color:var(--bad)}.s3{background:var(--sel);color:var(--mut)}
-.btn2{padding:10px 24px;border:1.5px solid var(--pri);background:transparent;color:var(--pri2);border-radius:24px;font:600 .95rem inherit;font-family:inherit;cursor:pointer}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px;max-width:360px}
-dialog::backdrop{background:rgba(0,0,0,.45)}
-dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
-dialog .acts button{padding:8px 18px;border-radius:20px;border:1.5px solid var(--pri);background:var(--pri);color:#fff;font:600 .9rem inherit;font-family:inherit;cursor:pointer}
-dialog .acts button.c{background:transparent;color:var(--pri2)}
-</style>
-</head>
-<body>
-<header>
-<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M20 8c-8 0-13 6-13 14 0 6 3 9 4 16 1 7 2 18 7 18 4 0 4-11 7-11h6c3 0 3 11 7 11 5 0 6-11 7-18 1-7 4-10 4-16 0-8-5-14-13-14-4 0-6 2-9 2s-5-2-9-2z" fill="#fff" stroke="#bdeff3" stroke-width="2"/><path d="M20 20c2 3 6 4 9 2" stroke="#13b5c2" stroke-width="2.5" stroke-linecap="round"/></svg>
-<h1>ENDODONTIYA</h1>
-<p>5-semestr · Yuqori murakkablik darajasi · 50 ta test (A1–A14 mavzulari)</p>
-</header>
-<div class="wrap">
-<div class="bar"><div class="row"><span id="cnt">Belgilangan: 0 / 50</span><span id="pc">0%</span></div><div class="track"><div class="fill" id="fill"></div></div></div>
-<div class="res" id="res">
-<div class="ring" id="ring"><span id="pct"></span></div>
-<h3 id="sc"></h3>
-<div class="stats"><div class="s1" id="s1"></div><div class="s2" id="s2"></div><div class="s3" id="s3"></div></div>
-<p id="msg" style="color:var(--mut);margin:6px 0 14px"></p>
-<button class="btn2" id="again">Testni qaytadan boshlash</button>
-</div>
-<div id="quiz"></div>
-<button class="fin" id="fin">Yakunlash</button>
-</div>
-<dialog id="dlg"><div id="dmsg"></div><div class="acts"><button class="c" id="dno">Qaytish</button><button id="dyes">Yakunlash</button></div></dialog>
-<script>
-var S=[
-["I. Endodontik asboblar va ularning sterilizatsiyasi",1,7],
-["II. Tish bo‘shlig‘ining topografik anatomiyasi va ochish texnikasi",8,15],
-["III. Pulpani olib tashlash va ildiz kanalini kengaytiruvchi asboblar",16,23],
-["IV. Qiyin o‘tuvchi va qiyshiq kanallarga ishlov berish",24,28],
-["V. Ildiz kanaliga medikamentoz va kimyoviy ishlov berish",29,35],
-["VI. Ishchi uzunlikni aniqlash usullari",36,40],
-["VII. Kanalni kengaytirish va medikamentoz ishlov berish usullari",41,45],
-["VIII. Plombalashga tayyorgarlik va qotmaydigan malhamlar",46,50]];
-// [savol, TO‘G‘RI javob, [noto‘g‘ri 1,2,3], izoh]
-var D=[
-["Endodontik asboblarni ISO standartiga muvofiq rangli kodlashda qizil rang qaysi o‘lchamga mos keladi?","ISO 25",["ISO 15","ISO 20","ISO 30"],"ISO rang kodi: 15 – oq, 20 – sariq, 25 – qizil, 30 – ko‘k."],
-["K-file va H-file (Hedström) asboblarining asosiy konstruktiv farqi nimada?","K-file burama metall simdan tayyorlanadi, H-file esa metall sterjenni frezalash orqali hosil qilinadi.",["K-file faqat aylanish harakati bilan, H-file faqat tebranish bilan ishlaydi.","H-file faqat zanglamaydigan po‘latdan, K-file esa faqat nikeltitan qotishmasidan tayyorlanadi.","Ularning konstruksiyasi va ishlash prinsipi bir xil."],"K-file simni burash, H-file sterjenni frezalash yo‘li bilan tayyorlanadi; shu sababli H-file kesuvchi qirralari o‘tkir bo‘ladi."],
-["Hedström faylidan foydalanishda qaysi harakat eng samarali hisoblanadi?","Kanal devoriga bosim bermasdan, tortib chiqarish harakati.",["Kuchli soat mili yo‘nalishida aylantirish.","Kanal ichida uzluksiz rotatsion harakat qilish.","Asbobni kanal ichida kuch bilan apikal tomonga surish."],"H-file tortib chiqarish (egovlash) harakatida samarali kesadi; aylantirish va kuch bilan surish asbob sinishiga olib keladi."],
-["Endodontik asboblarni sterilizatsiyadan oldingi tozalashning asosiy maqsadi nima?","Organik va noorganik qoldiqlarni yo‘qotib, sterilizatsiya samaradorligini oshirish.",["Asbobning rangini tiklash.","Asbobning kesuvchi qismini o‘tkirlash.","Asbobning elastikligini oshirish."],"Qoldiqlar mikroorganizmlarni himoya qiladi, shuning uchun avval tozalash, so‘ng sterilizatsiya qilinadi."],
-["Nikeltitan (NiTi) asboblarining zanglamaydigan po‘lat asboblarga nisbatan asosiy afzalligi qaysi?","Yuqori elastiklik va egri kanallarda shaklni saqlash imkoniyati.",["Yuqori qattiqlik va mo‘rtlik.","Faqat bir martalik foydalanishga mo‘ljallanganligi.","Barcha kanallarni irrigatsiyasiz kengaytirishi."],"NiTi qotishmasi superelastik bo‘lib, kanal egriligiga moslashadi va transportatsiya xavfini kamaytiradi."],
-["Endodontik asboblarni avtoklavda sterilizatsiya qilish qaysi omilga asoslanadi?","Bosim ostidagi to‘yingan suv bug‘ining ta’siriga.",["Quruq issiq havo ta’siriga.","Ultrabinafsha nurlanishga.","Kimyoviy bug‘lanishga."],"Avtoklavda yuqori bosim va to‘yingan suv bug‘i (odatda 121–134 °C) mikroorganizmlarni yo‘q qiladi."],
-["Endodontik faylning siklik charchashi (cyclic fatigue) qachon yuzaga keladi?","Fayl egri kanal ichida takroriy cho‘zilish va siqilish ta’siriga uchraganda.",["Fayl faqat to‘g‘ri kanalda ishlatilganda.","Fayl faqat sterilizatsiya vaqtida.","Fayl irrigatsion eritmaga tekkanda."],"Egrilik nuqtasida metall navbatma-navbat cho‘ziladi va siqiladi, natijada kutilmaganda sinish mumkin."],
-["Yuqori birinchi molyar tishda odatda nechta ildiz kanali mavjud bo‘ladi?","4 ta",["2 ta","3 ta","5 ta"],"Ikki ildizli mezial (MB1, MB2), distobukkal va palatinal – jami 4 ta kanal."],
-["Yuqori birinchi molyar tishda ko‘pincha aniqlanishi qiyin bo‘lgan qo‘shimcha kanal qaysi?","MB2",["DB2","Palatinal qo‘shimcha kanal","Distal apikal kanal"],"MB2 (ikkinchi mezio-bukkal kanal) bu tishda eng ko‘p uchraydi va topish qiyin; ko‘pincha mikroskop/lupa talab qilinadi."],
-["Pastki birinchi molyar tishda pulpa kamerasini ochish uchun odatda qaysi shakldagi trepanatsion kirish qo‘llaniladi?","To‘rtburchak yoki trapetsiyasimon",["Uchburchak","Doirasimon","Oval, faqat distal tomonda"],"Pastki molyarda mezial 2 va distal 1–2 kanal og‘zi borligi uchun kirish to‘rtburchak/trapetsiya shaklida bo‘ladi."],
-["Endodontik kirish bo‘shlig‘ini tayyorlashda asosiy maqsad nima?","Pulpa kamerasini to‘liq ochish va kanal og‘izlariga to‘g‘ri kirishni ta’minlash.",["Tish tojining barcha qismini olib tashlash.","Faqat pulpa shoxlarini olib tashlash.","Ildiz kanalini darhol apikal teshikkacha kengaytirish."],"To‘g‘ri chiziqli kirish asboblarni kanalga to‘siqsiz kiritishga imkon beradi."],
-["Yuqori kesuvchi tishlarda endodontik kirish bo‘shlig‘i qaysi yuzadan ochiladi?","Tanglay yuzasidan",["Vestibulyar yuzadan","Mezial yuzadan","Distal yuzadan"],"Tanglay (palatinal) yuzadan ochilganda estetik vestibulyar yuza saqlanadi va kanalga to‘g‘ri kirish ta’minlanadi."],
-["Tish bo‘shlig‘ining tomi to‘liq olib tashlanmasa, qanday asorat yuzaga kelishi mumkin?","Pulpa to‘qimasi qoldiqlari va kanal og‘izlarining aniqlanmasligi.",["Kanalning tabiiy kengayishi.","Ildiz uzunligining ortishi.","Apikal teshikning yopilishi."],"Tomning qoldig‘i kanal og‘izlarini yopib qo‘yadi, pulpa qoldig‘i qoladi va tish rangi o‘zgarishi mumkin."],
-["Endodontik kirish bo‘shlig‘ini tayyorlashda endodontik zondning asosiy vazifasi nima?","Kanal og‘izlarini aniqlash va tekshirish.",["Kanalni kengaytirish.","Guttaperchani kondensatsiyalash.","Irrigatsion eritmani faollashtirish."],"Endodontik zond (DG-16) kamera tubini paypaslab, kanal og‘izlarini topish uchun ishlatiladi."],
-["Ildiz kanalining tabiiy anatomik egriligini saqlash nima uchun muhim?","Kanal transportatsiyasi, pog‘ona hosil bo‘lishi va perforatsiya xavfini kamaytirish uchun.",["Kanalni tezroq plombalash uchun.","Pulpa kamerasini kengaytirish uchun.","Sealer sarfini oshirish uchun."],"Egrilik saqlansa, kanalning asl o‘qi buzilmaydi va ishlov berish xavfsiz bo‘ladi."],
-["Pulpektomiya jarayonida pulpa to‘qimasini olib tashlash uchun qaysi asbob ishlatiladi?","Pulpa ekstraktori (barbed broach)",["Lentulo spirali","Spreader","Plugger"],"Barbed broach tikanaksimon tishchalari bilan pulpani o‘rab, bir butun holda chiqaradi."],
-["Pulpa ekstraktoridan foydalanishda asosiy xavf nimadan iborat?","Asbobning kanal ichida sinishi yoki pulpaning apikal tomonga surilishi.",["Kanal devorining remineralizatsiyasi.","Guttaperchaning qotishi.","Kanalning kimyoviy kengayishi."],"Asbob nozik va mo‘rt: kanalga siqilib qolsa yoki kuch ishlatilsa sinadi, noto‘g‘ri ishlatilsa pulpani apikal tomonga suradi."],
-["Ildiz kanalini mexanik kengaytirishda K-reamerning asosiy vazifasi nima?","Kanalni mexanik kengaytirish va shakllantirish.",["Kanalga sealer kiritish.","Pulpa kamerasini ochish.","Kanalni quritish."],"K-reamer aylantirish harakati bilan kanalni kengaytiradi va shakllantiradi."],
-["Reamer va K-file asboblarining asosiy farqi qaysi javobda to‘g‘ri ko‘rsatilgan?","Reamer asosan aylantirish, K-file esa egovlash harakatlari bilan ishlatiladi.",["Reamer faqat tortish, K-file faqat itarish harakati bilan ishlaydi.","Reamer faqat irrigatsiya uchun ishlatiladi.","Ular faqat materiali bilan farqlanadi."],"Reamer burama (aylanma) harakat bilan, K-file esa egovlash (tortish) harakati bilan ishlaydi."],
-["Egri ildiz kanalida qattiq po‘latdan tayyorlangan katta o‘lchamli faylni kuch bilan apikal tomonga kiritish qanday oqibatga olib kelishi mumkin?","Kanal transportatsiyasi yoki pog‘ona hosil bo‘lishi.",["Kanal egriligining tiklanishi.","Dentin qalinligining ortishi.","Kanalning tabiiy ravishda yopilishi."],"Qattiq fayl to‘g‘rilanishga intiladi va kanalning tashqi devorini kesadi – pog‘ona, transportatsiya, perforatsiya."],
-["Glide path (sirpanish yo‘li) tayyorlashdan asosiy maqsad nima?","Keyingi mexanik asboblarning xavfsiz va erkin harakatlanishi uchun silliq yo‘l yaratish.",["Kanalni to‘liq plombalash.","Pulpa kamerasini sterilizatsiya qilish.","Apikal teshikni yopish."],"Kichik fayllar (masalan, #10–15) bilan silliq yo‘l ochilsa, NiTi asboblar sinish xavfi kamayadi."],
-["Crown-down usulida kanalga mexanik ishlov berish qaysi yo‘nalishda amalga oshiriladi?","Koronal qismdan apikal qismga.",["Apikal qismdan koronalki qismga.","Kanal o‘rtasidan ikki tomonga.","Faqat kanal og‘zida."],"Crown-down: avval koronal va o‘rta qism, so‘ng apikal qism kengaytiriladi."],
-["Egri kanallarda NiTi asboblarining ustunligi qaysi xususiyat bilan bog‘liq?","Superelastikligi va egiluvchanligi bilan.",["Yuqori qattiqligi bilan.","Dentin bilan kimyoviy birikishi bilan.","Yuqori issiqlik o‘tkazuvchanligi bilan."],"Superelastiklik NiTi asbobga kanalning egrilik shaklini saqlash imkonini beradi."],
-["Obliteratsiyaga uchragan ildiz kanalini aniqlashda qaysi usul diagnostik jihatdan eng foydali?","Rentgenologik tekshiruv va zarur hollarda CBCT.",["Faqat vizual ko‘rik.","Faqat perkussiya.","Faqat palpatsiya."],"Rentgen va CBCT kanalning joylashuvi, yo‘nalishi va chuqurligini ko‘rsatadi."],
-["Egri kanalga ishlov berishda asbobning kanalning tashqi devoriga siljishi qanday hodisa deyiladi?","Kanal transportatsiyasi.",["Kanal obturatsiyasi.","Pulpa nekrozi.","Apikal kondensatsiya."],"Transportatsiya – kanalning asl o‘qidan chetga og‘ish, kanalning tashqi egrilik tomoniga siljishi."],
-["Step-back texnikasining asosiy mohiyati nimada?","Ishchi uzunlikda apikal qismni tayyorlab, keyinchalik kattaroq o‘lchamdagi asboblar bilan bosqichma-bosqich qisqaroq uzunlikda ishlash.",["Katta o‘lchamli asboblar bilan koronal qismdan boshlash.","Kanalni faqat kimyoviy kengaytirish.","Kanalni faqat rotatsion asboblar bilan plombalash."],"Avval apikal qism ishchi uzunlikda tayyorlanadi, so‘ng har bir keyingi katta fayl ~1 mm qisqaroq ishlatiladi (konussimon shakl)."],
-["Faylning ildiz kanalida sinib qolishiga sabab bo‘luvchi asosiy omillardan biri qaysi?","Faylni ortiqcha zo‘riqtirish va takroriy mexanik charchash.",["Kanalni doimiy irrigatsiya qilish.","Ishchi uzunlikni aniqlash.","Kanalni quritish."],"Ortiqcha bosim, torsion yuklama va takroriy ishlatishdan metall charchaydi."],
-["Qiyshiq kanallarda asbob sinishining oldini olish uchun qaysi yondashuv to‘g‘ri?","Glide path yaratish, irrigatsiya qilish va ishlab chiqaruvchi ko‘rsatmalariga rioya etish.",["Faylni kuch bilan kiritish.","Faqat katta diametrli fayllardan foydalanish.","Asbobni kanal ichida uzoq vaqt harakatsiz qoldirish."],"Silliq yo‘l, tez-tez irrigatsiya va ishlab chiqaruvchi tavsiyalari (tezlik, moment) sinish xavfini kamaytiradi."],
-["Natriy gipoxlorit (NaOCl) endodontiyada qanday asosiy vazifani bajaradi?","Organik to‘qimalarni eritadi va antimikrob ta’sir ko‘rsatadi.",["Faqat kanalni mexanik kengaytiradi.","Dentin bilan mustahkam kimyoviy bog‘ hosil qiladi.","Guttaperchani qotiradi."],"NaOCl – asosiy irrigant: nekrotik va vital pulpa qoldiqlarini eritadi hamda keng spektrli antimikrob ta’sirga ega."],
-["EDTA eritmasining endodontik ishlov berishdagi asosiy vazifasi nima?","Dentin tarkibidagi noorganik komponentlarni xelatlash va smear layerning noorganik qismini yo‘qotish.",["Organik pulpa qoldiqlarini eritish.","Kanalni quritish.","Kanalga antibakterial sement kiritish."],"EDTA kalsiy ionlarini bog‘laydi (xelatlaydi), shu bilan smear layerni olib tashlaydi."],
-["NaOCl va EDTA eritmalarini qo‘llash ketma-ketligida qaysi fikr to‘g‘ri?","Ular orasida mos oraliq yuvish amalga oshirilishi kerak, chunki EDTA NaOClning erkin xlor miqdorini kamaytiradi.",["Ularni bir shpritsda aralashtirib yuborish kerak.","EDTA faqat kanal plombalangandan keyin qo‘llaniladi.","NaOCl faqat pulpa kamerasi uchun ishlatiladi."],"EDTA NaOCl bilan reaksiyaga kirishib erkin xlorni kamaytiradi, shuning uchun oralig‘ida yuvish (masalan, steril suv yoki NaOCl) zarur."],
-["Xlorheksidinning NaOClga nisbatan asosiy cheklovlaridan biri qaysi?","Organik to‘qimalarni eritish xususiyatiga ega emas.",["Antimikrob ta’siri umuman yo‘q.","Dentin bilan aloqa qilganda umuman ta’sir ko‘rsatmaydi.","Faqat qattiq to‘qimalarni eritadi."],"Xlorheksidin antimikrob, lekin nekrotik to‘qimani erita olmaydi."],
-["Natriy gipoxlorit va xlorheksidinni bevosita aralashtirish natijasida qanday modda hosil bo‘lishi mumkin?","Jigarrang-to‘q sariq cho‘kma.",["Kalsiy gidroksid.","Guttapercha.","EDTA kompleksi."],"Aralashganda jigarrang-to‘q sariq cho‘kma (parakloroanilin tutishi mumkin) hosil bo‘ladi; shuning uchun orasida oraliq yuvish shart."],
-["Smear layer nima?","Mexanik ishlov berish natijasida kanal devorida hosil bo‘ladigan organik va noorganik qoldiqlar qatlami.",["Ildiz kanalining tabiiy anatomik kengayishi.","Pulpa kamerasining fiziologik qavati.","Guttaperchaning yuzasidagi qoplama."],"Smear layer – asboblar dentinni kesganda hosil bo‘ladigan dentin qipig‘i, pulpa qoldig‘i va bakteriyalar qatlami."],
-["Kalsiy gidroksidning endodontiyada qo‘llanilishidagi asosiy terapevtik xususiyati qaysi?","Yuqori pH orqali antibakterial ta’sir ko‘rsatish.",["Kislotali muhit yaratish.","Guttaperchani eritish.","Kanal devorlarini mexanik kesish."],"Ca(OH)₂ ning pH i ~12,5: gidroksil ionlari bakteriyalarni yo‘q qiladi."],
-["Ildiz kanalining ishchi uzunligi deganda nima tushuniladi?","Kanalga ishlov berish va obturatsiya qilish rejalashtirilgan koronal tayanch nuqtadan apikal chegaragacha bo‘lgan masofa.",["Tish tojining uzunligi.","Tishning umumiy anatomik uzunligi.","Pulpa kamerasining chuqurligi."],"Ishchi uzunlik – koronal tayanch nuqtadan apikal ishlov berish chegarasigacha bo‘lgan masofa."],
-["Elektron apekslokator qanday prinsip asosida ishlaydi?","Elektr qarshiligi va impedans xususiyatlarini o‘lchash orqali.",["Ultratovush to‘lqinlari yordamida.","Faqat rentgen nurlarini qayd etish orqali.","Issiqlik o‘tkazuvchanligini aniqlash orqali."],"Apekslokator kanal ichidagi va periodont to‘qimasi orasidagi elektr qarshilik/impedans farqini o‘lchaydi."],
-["Rentgenologik usulda ishchi uzunlikni aniqlashda faylning anatomik apeksdan biroz qisqaroq joylashishiga nima sabab bo‘ladi?","Apikal konstriksiya odatda rentgenologik apeksdan koronalroq joylashadi.",["Anatomik va radiologik apeks har doim bir xil bo‘ladi.","Kanal doimo to‘g‘ri bo‘ladi.","Faylning diametri kichik bo‘ladi."],"Apikal konstriksiya apeksdan ~0,5–1 mm koronalroq, shuning uchun ishchi uzunlik biroz qisqaroq olinadi."],
-["Apekslokator ko‘rsatkichlariga qaysi holat salbiy ta’sir ko‘rsatishi mumkin?","Pulpa kamerasida ortiqcha irrigatsion suyuqlik to‘planishi va elektr o‘tkazuvchi suyuqlikning noto‘g‘ri kontakt hosil qilishi.",["Kanalning quruq va toza bo‘lishi.","Faylning to‘g‘ri tanlanishi.","Kanalning anatomik egriligi."],"Ortiqcha suyuqlik yoki qon qisqa tutashuv hosil qiladi va ko‘rsatkichni buzadi."],
-["Elektron apekslokator ko‘rsatkichini rentgenologik tekshiruv bilan birgalikda baholashning afzalligi nimada?","Ishchi uzunlikni aniqroq baholash va anatomik o‘ziga xosliklarni hisobga olish imkonini beradi.",["Kanalni mexanik kengaytirish zarurati yo‘qoladi.","Irrigatsiya zarurati yo‘qoladi.","Kanalni plombalashda sealer talab qilinmaydi."],"Ikki usulni birga qo‘llash xatolarni kamaytiradi va natijani tasdiqlaydi."],
-["Apikal-koronal kengaytirish usulida dastlab qaysi qismga ishlov beriladi?","Apikal qismga.",["Koronal qismga.","Kanal og‘ziga.","Pulpa kamerasiga."],"Apikal-koronal (step-back) usulda ishlov apikal qismdan boshlanadi."],
-["Koronal-apikal (crown-down) usulining muhim afzalligi nimada?","Koronal interferensiyalarni kamaytiradi va irrigatsion eritmaning apikal qismga yetib borishini yaxshilashi mumkin.",["Apikal qismni dastlab kengaytirib yuboradi.","Ishchi uzunlikni aniqlashni bekor qiladi.","Kanalni irrigatsiyasiz tozalaydi."],"Koronal qismning avval kengayishi asbob erkin harakatlanishini ta’minlaydi va irrigant chuqurroq kiradi."],
-["Kanalni medikamentoz ishlov berishda irrigatsion ignani kanal ichiga chuqur va kuch bilan kiritish qanday xavf tug‘diradi?","Irrigatsion eritmaning periapikal to‘qimalarga chiqib ketishi.",["Dentin qalinlashishi.","Kanalning tabiiy kengayishi.","Pulpaning qayta tiklanishi."],"Igna siqilib qolsa va kuch bilan bosilsa, NaOCl periapikal to‘qimaga chiqib, og‘riq va shish keltiradi."],
-["Irrigatsion eritmaning samaradorligini oshirish uchun ultratovushli aktivatsiya qanday ta’sir ko‘rsatadi?","Suyuqlik harakatini kuchaytirib, kanalning murakkab qismlarini tozalashga yordam beradi.",["Eritmaning faolligini to‘liq yo‘qotadi.","Kanalni mexanik ravishda plombalaydi.","Kanal devorida sement hosil qiladi."],"Ultratovush akustik oqim va kavitatsiya hosil qilib, isthmus va yon kanallarni tozalaydi."],
-["Ildiz kanaliga ishlov berishning yakuniy bosqichida quritish uchun qaysi vosita ishlatiladi?","Steril qog‘oz shtiftlar (paper points).",["Pulpa ekstraktori.","Lentulo spirali.","K-reamer."],"Paper point kanaldagi namlikni so‘rib oladi va kanalni obturatsiyaga tayyorlaydi."],
-["Ildiz kanalini plombalashdan oldin asosiy klinik talab qaysi?","Kanal mexanik va kimyoviy tozalangan, quritilgan va obturatsiyaga tayyor bo‘lishi.",["Kanalda irrigatsion eritma ko‘p miqdorda qolishi.","Kanal ichida pulpa qoldiqlari saqlanishi.","Kanal faqat koronal qismigacha kengaytirilishi."],"Plombalash toza, quruq va to‘liq shakllangan kanalda bajariladi."],
-["Lentulo spirali qanday maqsadda ishlatiladi?","Kanal ichiga sealer yoki kanal ichidagi dori vositasini kiritish uchun.",["Pulpa to‘qimasini olib tashlash uchun.","Kanalning apikal qismini kengaytirish uchun.","Guttaperchani kesish uchun."],"Lentulo kanalga sealer yoki pastani aylanma harakat bilan olib kirib, devorga tekis taqsimlaydi."],
-["Kalsiy gidroksid asosidagi qotmaydigan kanal ichi pastalarining asosiy xususiyati qaysi?","Vaqtinchalik medikamentoz ishlov berish uchun qo‘llaniladi va yuqori pHga ega.",["Kanalni doimiy obturatsiya qilish uchun mo‘ljallangan.","Faqat kanalni mexanik kengaytiradi.","Guttaperchani eritadi."],"Bu pastalar seanslararo dezinfeksiya uchun vaqtincha qo‘yiladi, pH i yuqori."],
-["Qotmaydigan kalsiy gidroksid pastasi kanal ichida uzoq muddat nazoratsiz qoldirilsa, qanday salbiy holat yuzaga kelishi mumkin?","Dentin mexanik xususiyatlarining susayishi va kanalni keyinchalik to‘liq tozalash qiyinlashishi mumkin.",["Dentin mineralizatsiyasi har doim ortadi.","Ildiz uzunligi ortadi.","Kanal avtomatik ravishda obturatsiyalanadi."],"Uzoq vaqt qolgan pasta dentinni zaiflashtiradi (sinish xavfi) va qoldiqlarini olib tashlash qiyin bo‘ladi."],
-["Qotmaydigan medikamentoz pasta bilan doimiy kanal plombalovchi sealerning asosiy farqi nimada?","Medikamentoz pasta vaqtinchalik davolash uchun, sealer esa obturatsiya materialining kanal devori bilan zich kontaktini ta’minlash uchun ishlatiladi.",["Ikkalasi ham bir xil maqsadda qo‘llaniladi.","Sealer faqat pulpa kamerasini tozalash uchun ishlatiladi.","Medikamentoz pasta faqat mexanik kengaytirish uchun ishlatiladi."],"Pasta – vaqtinchalik dezinfeksiya; sealer – doimiy plombada guttapercha va dentin orasidagi bo‘shliqni yopadi."]
-];
-var L="ABCD",quiz=document.getElementById("quiz"),Q=[],done=false;
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
-function build(){
- done=false;var pos=[];for(var i=0;i<D.length;i++)pos.push(i%4);shuffle(pos);
- Q=D.map(function(d,i){var w=shuffle(d[2].slice()),o=[],k=0;for(var p=0;p<4;p++)o.push(p===pos[i]?d[1]:w[k++]);return{q:d[0],o:o,c:pos[i],e:d[3],a:-1}});
- var h="";S.forEach(function(s){h+='<h2 class="sec">'+s[0]+'</h2>';for(var n=s[1];n<=s[2];n++){var q=Q[n-1];h+='<div class="q" id="q'+(n-1)+'"><div class="t"><b>'+n+'.</b>'+q.q+'</div>';q.o.forEach(function(t,j){h+='<button class="o" data-q="'+(n-1)+'" data-o="'+j+'"><i>'+L[j]+'</i><span>'+t+'</span></button>'});h+='<div class="exp"></div></div>'}});
- quiz.innerHTML=h;quiz.classList.remove("locked");
- document.getElementById("res").style.display="none";document.getElementById("fin").style.display="block";upd();
-}
-function upd(){var n=Q.filter(function(q){return q.a>=0}).length;document.getElementById("cnt").textContent="Belgilangan: "+n+" / "+Q.length;var p=Math.round(n/Q.length*100);document.getElementById("pc").textContent=p+"%";document.getElementById("fill").style.width=p+"%"}
-quiz.addEventListener("click",function(e){var b=e.target.closest(".o");if(!b||done)return;var qi=+b.dataset.q,oi=+b.dataset.o;Q[qi].a=oi;document.querySelectorAll('#q'+qi+' .o').forEach(function(x,j){x.classList.toggle("sel",j===oi)});upd()});
-var dlg=document.getElementById("dlg");
-document.getElementById("fin").onclick=function(){var left=Q.filter(function(q){return q.a<0}).length;if(left){document.getElementById("dmsg").textContent="Javob belgilanmagan savollar: "+left+" ta. Baribir yakunlaysizmi?";try{dlg.showModal()}catch(x){if(confirm("Javobsiz savollar: "+left+". Yakunlaysizmi?"))finish()}}else finish()};
-document.getElementById("dno").onclick=function(){dlg.close()};
-document.getElementById("dyes").onclick=function(){dlg.close();finish()};
-function finish(){
- done=true;var ok=0,bad=0,skip=0;
- Q.forEach(function(q,i){var box=document.getElementById("q"+i),bs=box.querySelectorAll(".o");bs.forEach(function(b,j){b.classList.remove("sel");if(j===q.c)b.classList.add("ok");else if(j===q.a)b.classList.add("bad")});
-  var st;if(q.a<0){skip++;st="⚠ Javob belgilanmagan."}else if(q.a===q.c){ok++;st="✅ To‘g‘ri."}else{bad++;st="❌ Noto‘g‘ri."}
-  box.querySelector(".exp").innerHTML="<b>"+st+" To‘g‘ri javob: "+L[q.c]+")</b><br>"+q.e});
- quiz.classList.add("locked");
- var p=Math.round(ok/Q.length*100);
- document.getElementById("ring").style.setProperty("--p",p);document.getElementById("pct").textContent=p+"%";
- document.getElementById("sc").textContent="Siz to‘plagan ball: "+ok+" / "+Q.length;
- document.getElementById("s1").textContent="To‘g‘ri: "+ok;document.getElementById("s2").textContent="Noto‘g‘ri: "+bad;document.getElementById("s3").textContent="Belgilanmagan: "+skip;
- document.getElementById("msg").textContent=p>=86?"A’lo natija! 🦷":p>=71?"Yaxshi natija, takrorlashda davom eting.":p>=56?"Qoniqarli. Xato qilingan mavzularni takrorlang.":"Mavzularni qayta o‘qib chiqish tavsiya etiladi.";
- document.getElementById("res").style.display="block";document.getElementById("fin").style.display="none";
- window.scrollTo({top:0,behavior:"smooth"});
-}
-document.getElementById("again").onclick=function(){build();window.scrollTo({top:0,behavior:"smooth"})};
-build();
-</script>
-</body>
-</html>
+
+    <!DOCTYPE html>
+    <html lang="uz">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Stomatologik Kasalliklar Profilaktikasi Testlari</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <style>
+            /* MATNNI NUSXALASHNI (COPY) VA TANLASHNI TAQIQLASH */
+            body {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* input maydonlarida yozishga ruxsat berish */
+            input, textarea {
+                -webkit-user-select: auto !important;
+                -khtml-user-select: auto !important;
+                -moz-user-select: auto !important;
+                -ms-user-select: auto !important;
+                user-select: auto !important;
+            }
+
+            .option-btn {
+                transition: all 0.2s ease-in-out;
+            }
+            .option-btn:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+
+            .secure-mode {
+                filter: blur(0px);
+            }
+        </style>
+    </head>
+    <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans" oncontextmenu="return false;">
+
+        <header class="bg-teal-600 text-white shadow-md sticky top-0 z-50">
+            <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h1 class="text-lg sm:text-xl font-bold text-center sm:text-left">🦷 Profilaktika Testlari</h1>
+                <div id="timer-box" class="bg-teal-800 px-4 py-2 rounded-xl font-mono text-base sm:text-lg font-semibold flex items-center gap-2 shadow-inner hidden">
+                    ⏳ Qolgan vaqt: <span id="time-display">50:00</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-6 bg-white rounded-2xl shadow-xl flex-grow secure-mode">
+            
+            <!-- Start Screen -->
+            <div id="start-screen" class="text-center py-10">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-700 mb-4">Bilimingizni sinovdan o‘tkazing!</h2>
+                <p class="text-slate-600 mb-6 max-w-lg mx-auto leading-relaxed">
+                    Ushbu test 50 ta savoldan iborat bo‘lib, jami <span class="font-bold text-teal-600">50 daqiqa</span> vaqt ajratilgan.<br>
+                    <span class="text-rose-500 font-bold text-sm">⚠️ Diqqat: Test paytida ekranni rasmga olish va matndan nusxa ko'chirish taqiqlanadi!</span>
+                </p>
+                
+                <div id="name-input-container" class="max-w-sm mx-auto mb-6 text-left">
+                    <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-2">Ism va Familiyangizni kiriting:</label>
+                    <input type="text" id="student-name" placeholder="Masalan: Alisher Valiyev" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-2" required>
+                    <p id="name-error" class="text-rose-500 text-sm hidden">Iltimos, ism va familiyangizni kiriting!</p>
+                </div>
+
+                <button id="start-btn" type="button" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                    Testni boshlash 🚀
+                </button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 text-sm text-slate-500 font-semibold border-b pb-3 gap-2">
+                    <span id="question-counter">Savol: 1 / 50</span>
+                    <div class="flex items-center gap-4">
+                        <button type="button" onclick="togglePalette()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1 rounded-lg text-xs font-bold border">
+                            📋 Savollar paneli
+                        </button>
+                    </div>
+                </div>
+
+                <div id="palette-modal" class="hidden mb-6 p-4 bg-slate-100 rounded-xl border">
+                    <p class="text-xs font-bold text-slate-600 mb-2">Savollar ro'yxati (o'tish uchun bosing):</p>
+                    <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-40 overflow-y-auto p-1"></div>
+                </div>
+
+                <div id="question-container" class="mb-6">
+                    <h3 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 mb-4 leading-relaxed"></h3>
+                    <div id="options-container" class="space-y-3"></div>
+                </div>
+
+                <div class="flex flex-wrap justify-between items-center mt-8 pt-4 border-t gap-3">
+                    <button id="prev-btn" type="button" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-5 py-2.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                        ← Oldingi
+                    </button>
+                    
+                    <button type="button" onclick="confirmFinish()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold px-4 py-2 rounded-xl text-sm">
+                        Yakunlash 🏁
+                    </button>
+
+                    <button id="next-btn" type="button" onclick="nextQuestion()" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow">
+                        Keyingi →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="hidden text-center py-8">
+                <h2 class="text-3xl font-extrabold text-teal-700 mb-4">🎉 Test yakunlandi!</h2>
+                <div class="bg-teal-50 p-6 rounded-2xl max-w-md mx-auto mb-6 shadow-inner text-left space-y-3">
+                    <p class="text-center text-lg text-slate-700 font-bold mb-4 border-b border-teal-200 pb-2">Umumiy hisobot</p>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Talaba:</span> <span id="res-student-name" class="font-bold text-teal-700"></span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Umumiy savollar:</span> <span id="res-total" class="font-bold text-teal-700">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilandi:</span> <span id="res-attempted" class="font-bold text-blue-600">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">To'g'ri javoblar:</span> <span id="res-correct" class="font-bold text-emerald-600">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Noto'g'ri javoblar:</span> <span id="res-incorrect" class="font-bold text-rose-600">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Belgilanmagan:</span> <span id="res-unanswered" class="font-bold text-slate-500">0</span></div>
+                    <div class="mt-4 pt-4 border-t border-teal-200 text-center">
+                        <p id="final-percentage" class="text-2xl font-black text-teal-600">Foiz: 0%</p>
+                    </div>
+                </div>
+
+                <!-- Batafsil Javoblar Qismi (YANGI) -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                    <button id="toggle-review-btn" type="button" onclick="toggleReview()" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold px-6 py-3 rounded-xl shadow transition w-full sm:w-auto">
+                        Batafsil javoblarni ko'rish 📄
+                    </button>
+                    
+                    <button id="tg-close-btn" type="button" onclick="closeApp()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl shadow transition transform hover:scale-105 w-full sm:w-auto">
+                        Chiqish (Yopish) 🚪
+                    </button>
+                </div>
+
+                <div id="review-container" class="mt-6 text-left hidden w-full max-w-2xl mx-auto space-y-2 max-h-96 overflow-y-auto p-4 bg-white rounded-xl shadow border border-slate-200 text-sm">
+                    <!-- Javascript orqali to'ldiriladi -->
+                </div>
+
+            </div>
+
+        </main>
+
+        <script>
+            const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+            if (tg) {
+                tg.expand();
+                document.documentElement.style.setProperty('--tg-viewport-height', window.innerHeight + 'px');
+                if (tg.isVersionAtLeast('6.9')) { tg.setHeaderColor('#0f766e'); }
+                tg.ready();
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'PrintScreen') {
+                    navigator.clipboard.writeText('');
+                    alert("Skrinshot olish taqiqlangan!");
+                }
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                }
+                if (e.key === 'F12') { e.preventDefault(); }
+            });
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.addEventListener('dragstart', event => event.preventDefault());
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'hidden') {
+                    document.body.style.filter = "blur(10px)";
+                } else {
+                    document.body.style.filter = "none";
+                }
+            });
+
+            const quizData = [
+                {
+                    q: "Chaqaloqlarda (1 yoshgacha) og'iz bo'shlig'i ko'rigining asosiy maqsadi nima?",
+                    options: ["Til yuganining holatini va sut tishlari chiqishini nazorat qilish", "Doimiy tishlar kariyesini davolash", "Tish toshlarini tozalash", "Breket taqishga tayyorgarlik ko'rish"],
+                    answer: 0
+                },
+                {
+                    q: "Maktabgacha yoshdagi bolalarda profilaktik ko'rik necha oyda bir marta o'tkazilishi tavsiya etiladi?",
+                    options: ["Har yili bir marta", "6 oyda bir marta (ayrim hollarda 3-4 oyda)", "Faqat tish og'riganda", "Har oyda"],
+                    answer: 1
+                },
+                {
+                    q: "O'smirlar (12-15 yosh) ko'rigida asosan qaysi patologiyaga e'tibor qaratiladi?",
+                    options: ["Sut tishlari chiqishiga", "Yuvinish qoidalariga", "Gingivit (milk yallig'lanishi) va doimiy tishlar kariyesiga", "Chaqaloqlar stomatitiga"],
+                    answer: 2
+                },
+                {
+                    q: "Birinchi sut tishi (pastki markaziy kurak) o'rtacha qachon chiqadi?",
+                    options: ["2-3 oyda", "6-8 oyda", "12-14 oyda", "1-chi yoshning oxirida"],
+                    answer: 1
+                },
+                {
+                    q: "Sut tishlari to'liq chiqib bo'lishi qaysi yoshga to'g'ri keladi?",
+                    options: ["1-1.5 yosh", "2-2.5 yosh", "4-5 yosh", "6-7 yosh"],
+                    answer: 1
+                },
+                {
+                    q: "Sut tishlari ildizining so'rilishi (rezorbsiyasi) odatda nima bilan bog'liq?",
+                    options: ["Kariyes boshlanishi bilan", "Doimiy tish murtagining o'sishi va yaqinlashishi bilan", "Noto'g'ri ovqatlanish bilan", "Tish toshlarining to'planishi bilan"],
+                    answer: 1
+                },
+                {
+                    q: "Bolalarda birinchi doimiy tish qaysi biri chiqadi?",
+                    options: ["Yuqori markaziy kurak", "Pastki qoziq tish", "Birinchi doimiy molyar (6-tish)", "Birinchi premolyar"],
+                    answer: 2
+                },
+                {
+                    q: "Almashinuv prikusi davri asosan qaysi yoshlarni o'z ichiga oladi?",
+                    options: ["2-5 yosh", "6-12 yosh", "13-18 yosh", "18 yoshdan keyin"],
+                    answer: 1
+                },
+                {
+                    q: "Doimiy tish ildizi tish chiqqandan so'ng o'rtacha necha yilda to'liq shakllanib bo'ladi?",
+                    options: ["Tish chiqishi bilan to'liq shakllanadi", "1 oyda", "3-4 yilda", "10 yilda"],
+                    answer: 2
+                },
+                {
+                    q: "Kariyes tarqalishi ko'rsatkichi (KT) qanday hisoblanadi?",
+                    options: ["Kariyesi bor shaxslar sonining tekshirilganlar umumiy soniga nisbatining foizdagi ifodasi", "Bir kishidagi kariyesli tishlar soni", "Plombalangan tishlar soni", "Tushgan tishlar soni"],
+                    answer: 0
+                },
+                {
+                    q: "KPI (Kariyes, Plombalangan, Yulib tashlangan) indeksi nimani ifodalaydi?",
+                    options: ["Kariyes tarqalishini", "Kariyes jadalligini", "Davolashga muhtojlikni", "Tish toshlari miqdorini"],
+                    answer: 1
+                },
+                {
+                    q: "Davolashga muhtojlik ko'rsatkichi (DM) qanday aniqlanadi?",
+                    options: ["Faqat yulib tashlangan tishlar soniga qarab", "Davolanmagan kariyesli tishlar (K) sonining, barcha zararlangan tishlar (KPI) soniga nisbati bilan", "Oq dog'lar soniga qarab", "Tish yuvish chastotasiga qarab"],
+                    answer: 1
+                },
+                {
+                    q: "Og'iz bo'shlig'i gigiyenasi indekslarining asosiy vazifasi nima?",
+                    options: ["Tish emali qalinligini o'lchash", "So'lak miqdorini aniqlash", "Tishlardagi karash va toshlar miqdorini baholash orqali tozalik darajasini aniqlash", "Kariyes chuqurligini o'lchash"],
+                    answer: 2
+                },
+                {
+                    q: "OHI-S (Green-Vermillion) indeksida asosan nechta tish tekshiriladi?",
+                    options: ["Barcha tishlar", "6 ta ko'rsatkich tish (16, 11, 26, 36, 31, 46)", "Faqat oziq tishlar", "Faqat front (old) tishlar"],
+                    answer: 1
+                },
+                {
+                    q: "JSST mezonlariga ko'ra OHI-S indeksi 1.3 - 3.0 oralig'ida bo'lsa, og'iz gigiyenasi qanday baholanadi?",
+                    options: ["Yaxshi", "Qoniqarli", "Qoniqarsiz", "Juda yomon"],
+                    answer: 2
+                },
+                {
+                    q: "PMA (Papillar-marginal-alveolar) indeksi asosan qaysi kasallikni baholash uchun ishlatiladi?",
+                    options: ["Tish kariyesini", "Milk yallig'lanishini (Gingivitni)", "Tish emali gipoplaziyasini", "So'lak bezi yallig'lanishini"],
+                    answer: 1
+                },
+                {
+                    q: "KPI (Kompleks periodontal indeks) tekshiruvida nimalar baholanadi?",
+                    options: ["Faqat qonash", "Tish toshlari, qonash, patologik cho'ntaklar va tish qimirlashi", "Tish ildizi shakli", "Tish rangi"],
+                    answer: 1
+                },
+                {
+                    q: "PMA indeksi 30% dan past bo'lsa, gingivit darajasi qanday?",
+                    options: ["Yengil daraja", "O'rta daraja", "Og'ir daraja", "Yallig'lanish yo'q"],
+                    answer: 0
+                },
+                {
+                    q: "Kulajenko usuli (vakuum sinamasi) qanday maqsadda ishlatiladi?",
+                    options: ["Tish karashini tozalash uchun", "Milk qon tomirlarining o'tkazuvchanligi va rezistentligini (chidamliligini) aniqlash uchun", "Tish ildizini davolash uchun", "Og'iz bo'shlig'i hidini o'lchash uchun"],
+                    answer: 1
+                },
+                {
+                    q: "Shiller-Pisarev sinamasi nima yordamida o'tkaziladi?",
+                    options: ["Metilen ko'ki", "Fuksina", "Yod o'z ichiga olgan eritma (Yod-yodkaliya)", "Vodorod peroksid"],
+                    answer: 2
+                },
+                {
+                    q: "CPITN (Parodont kasalliklarini davolashga ehtiyoj indeksi) nimani aniqlashga yordam beradi?",
+                    options: ["Aholining parodontni davolash chora-tadbirlariga (masalan, gigiyena o'rgatish, tosh tozalash) bo'lgan ehtiyojini", "Plombalash kerak bo'lgan tishlar sonini", "Bolalarda prikus anomaliyalarini", "Tish emali rangini"],
+                    answer: 0
+                },
+                {
+                    q: "Og'iz bo'shlig'i shilliq qavatining mexanik to'siq (baryer) funksiyasini qaysi qatlam bajaradi?",
+                    options: ["Mushak qavati", "Ko'p qavatli yassi epiteliy", "Suyak to'qimasi", "Tish emali"],
+                    answer: 1
+                },
+                {
+                    q: "Og'iz bo'shlig'ining mahalliy immunitetini ta'minlashda qaysi immunoglobulin asosiy rol o'ynaydi?",
+                    options: ["IgG", "IgM", "IgE", "Sekretor IgA"],
+                    answer: 3
+                },
+                {
+                    q: "So'lak tarkibidagi bakteritsid xususiyatga ega ferment qaysi?",
+                    options: ["Amilaza", "Lipaza", "Lizotsim", "Pepsin"],
+                    answer: 2
+                },
+                {
+                    q: "So'lakning rN ko'rsatkichi normada qancha bo'ladi?",
+                    options: ["5.0 - 5.5", "6.5 - 7.5", "8.0 - 9.0", "4.0 - 4.5"],
+                    answer: 1
+                },
+                {
+                    q: "So'lakning qanday xususiyati emalning remineralizatsiyasini ta'minlaydi?",
+                    options: ["Kislotalarni ajratishi", "Uglevodlarga boyligi", "Kalsiy va fosfor ionlari bilan o'ta to'yinganligi", "Tarkibida faqat suv bo'lishi"],
+                    answer: 2
+                },
+                {
+                    q: "Kserostomiya (og'iz qurishi) kariyes rivojlanishiga qanday ta'sir qiladi?",
+                    options: ["Ta'sir qilmaydi", "Kariyes xavfini keskin oshiradi", "Kariyes xavfini kamaytiradi", "Tishlarni oqartiradi"],
+                    answer: 1
+                },
+                {
+                    q: "Kariyesni chaqiruvchi asosiy mikroorganizm qaysi?",
+                    options: ["Streptococcus salivarius", "Streptococcus mutans", "Staphylococcus aureus", "Escherichia coli"],
+                    answer: 1
+                },
+                {
+                    q: "Kariyesogen muhit asosan qanday oziq-ovqatlar iste'molidan so'ng paydo bo'ladi?",
+                    options: ["Oqsillar", "Yog'lar", "Oson o'zlashuvchi uglevodlar (shakar)", "Vitaminlar"],
+                    answer: 2
+                },
+                {
+                    q: "Kariyes rivojlanishida Miller (kimyoviy-parazitar) nazariyasiga ko'ra mikroorganizmlar nima ishlab chiqaradi?",
+                    options: ["Ishqor", "Organik kislotalar (masalan, sut kislotasi)", "Kislorod", "Vodorod"],
+                    answer: 1
+                },
+                {
+                    q: "Kariyesning umumiy e'tirof etilgan, hozirgi zamonaviy nazariyasi (konsepsiyasi) nimalarga asoslangan?",
+                    options: ["Faqat irsiyatga", "Mikroorganizmlar, uglevodlar va tishning chidamliligi kabi omillarning birgalikdagi ta'siriga", "Faqat qurtlar tishni yeyishiga", "Faqat stressga"],
+                    answer: 1
+                },
+                {
+                    q: "Shaj ko'ra emaldagi oqsil moddalarning parchalanishi kariyesning asosiy sababidir, bu qaysi nazariya?",
+                    options: ["Kimyoviy-parazitar (Miller)", "Fibrillyar (Shaj)", "Proteolitik (Gottlib)", "Teyler nazariyasi"],
+                    answer: 2
+                },
+                {
+                    q: "Neuman nazariyasining asosiy mohiyati nimada?",
+                    options: ["Pulpaning yallig'lanishi", "Tish to'qimasining oziqlanishi buzilishi (Trofobakterial)", "Tishlarning funksional yuklamasining kamayishi (chaynamaslik)", "Tish iplarini ishlatmaslik"],
+                    answer: 2
+                },
+                {
+                    q: "Tish karashi (nalyot) asosan qanday vujudga keladi?",
+                    options: ["Tish tozalashdan keyin darhol", "Oqsil-uglevod komponentlari va bakteriyalarning tish yuzasida to'planishi va yopishishi orqali", "Suv ichgandan so'ng", "Mevalar yeganda"],
+                    answer: 1
+                },
+                {
+                    q: "Pellikula nima?",
+                    options: ["Qattiq tish toshi", "So'lak glikoproteinlaridan hosil bo'lgan, tishni tozalagandan so'ng paydo bo'ladigan yupqa orttirilgan parda", "Bakteriyalar koloniyasi", "Milk yallig'lanishi"],
+                    answer: 1
+                },
+                {
+                    q: "Bolalarda yumshoq karash ko'pincha tishning qaysi sohalarida ko'proq to'planadi?",
+                    options: ["Chaynov yuzasida doim", "Kesuvchi qirralarda", "Tish bo'yni sohasida va tish oraliqlarida", "Tanglay tomonida faqat"],
+                    answer: 2
+                },
+                {
+                    q: "Milk usti tish toshi qanday rangda bo'ladi?",
+                    options: ["Qora yoki to'q jigarrang", "Oqish, sarg'ish yoki kulrang (ovqat pigmentiga qarab)", "Qizil", "Yashil"],
+                    answer: 1
+                },
+                {
+                    q: "Milk osti tish toshi asosan nima hisobiga hosil bo'ladi va oziqlanadi?",
+                    options: ["So'lak minerallari hisobiga", "Milk cho'ntagi suyuqligi (ekssudat) va qon zardobi hisobiga", "Choy va kofe rangiga", "Faqat shakar qoldiqlari hisobiga"],
+                    answer: 1
+                },
+                {
+                    q: "Qaysi tishlarda milk usti toshlari eng ko'p va tez hosil bo'ladi?",
+                    options: ["Yuqori kurak tishlarda", "Pastki jag' oldingi tishlarining til tomonida (so'lak bezlari yaqinida)", "Faqat aql tishlarida", "Barcha tishlarda bir xilda"],
+                    answer: 1
+                },
+                {
+                    q: "Tish toshlarining parodont kasalligini keltirib chiqarishdagi mexanizmi nima?",
+                    options: ["Tish emalini qalinlashtiradi", "Milkni mexanik jarohatlaydi va bakteriyalar ko'payishi uchun manba bo'lib xizmat qiladi", "Tishlarni mustahkamlaydi", "So'lak ajralishini to'xtatadi"],
+                    answer: 1
+                },
+                {
+                    q: "Karash va tish toshlari vaqtida tozalanmasa qanday oqibatga olib keladi?",
+                    options: ["Emalning o'z-o'zidan tiklanishiga", "Gingivit va parodontit kabi milk kasalliklariga", "Faqat tish rangining o'zgarishiga", "Tishning kattalashishiga"],
+                    answer: 1
+                },
+                {
+                    q: "Tish toshlari tish kariyesiga bevosita sabab bo'ladimi?",
+                    options: ["Tish toshi asosan parodontni buzadi, ammo uning ostidagi karash kislota hosil qilib kariyesga sabab bo'lishi mumkin", "Yo'q, tish toshi kariyesdan to'liq himoya qiladi", "Ha, toshning o'zi tishni eritadi", "Tish toshi faqat estetik muammo"],
+                    answer: 0
+                },
+                {
+                    q: "Emalning o'choqli demineralizatsiyasi (oq dog' bosqichidagi kariyes) qanday klinik ko'rinishga ega?",
+                    options: ["Qora chuqur kavak", "Tish yuzasida yaltiroqligini yo'qotgan, bo'rsimon oq yoki xira dog'", "Emalning to'liq yemirilishi", "Tish toshi"],
+                    answer: 1
+                },
+                {
+                    q: "Oq dog' bosqichidagi kariyesni sog'lom emaldan yoki gipoplaziyadan farqlash uchun qanday klinik usul (sinama) qo'llaniladi?",
+                    options: ["Vital bo'yash usuli (masalan, 2% metilen ko'ki eritmasi bilan)", "Rentgen", "EOD (Elektroodontodiagnostika)", "Termosinama (sovuq suv)"],
+                    answer: 0
+                },
+                {
+                    q: "O'choqli demineralizatsiya paytida metilen ko'ki bilan bo'yalganda qanday natija olinadi?",
+                    options: ["Sog'lom emal bo'yaladi, dog' bo'yalmaydi", "Dog' qismidagi emal ko'k rangga bo'yaladi (g'ovakligi oshgani uchun)", "Tish qizil rangga kiradi", "Hech qanday o'zgarish bo'lmaydi"],
+                    answer: 1
+                },
+                {
+                    q: "Remineralizatsiya terapiyasi asosan kariyesning qaysi bosqichida eng samarali?",
+                    options: ["Chuqur kariyesda", "O'rta kariyesda", "Oq dog' bosqichida (boshlang'ich kariyes)", "Pulpidda"],
+                    answer: 2
+                },
+                {
+                    q: "Ftor saqlovchi tish pastalarining kariyes profilaktikasidagi roli nima?",
+                    options: ["Emaldagi gidroksiapatitni ftorapatitga aylantirib, uning kislotaga chidamliligini oshiradi", "Tish toshlarini eritadi", "So'lak hidini yengadi", "Faqat milkni mustahkamlaydi"],
+                    answer: 0
+                },
+                {
+                    q: "JSST ma'lumotlariga ko'ra ichimlik suvidagi ftorning optimal miqdori qancha bo'lishi kerak?",
+                    options: ["0.1 mg/l gacha", "0.8 - 1.2 mg/l", "3.0 mg/l dan ko'p", "Umuman bo'lmasligi kerak"],
+                    answer: 1
+                },
+                {
+                    q: "Tish toshlarini tozalash usullari qaysilar?",
+                    options: ["Faqat mexanik", "Mexanik, ultratovush (skylerlar), kimyoviy", "Faqat kimyoviy (kislota bilan)", "Lazer orqali eritis"],
+                    answer: 1
+                },
+                {
+                    q: "Bolalarga tish yuvishni o'rgatishni (gigiyenaga o'rgatish) qachondan boshlash kerak?",
+                    options: ["Birinchi sut tishi chiqqan kundan boshlab (ota-ona yordamida)", "Barcha sut tishlari chiqqandan keyin (3 yoshdan)", "Doimiy tishlar chiqqanda", "Maktabga borganda"],
+                    answer: 0
+                }
+            ];
+
+            let currentQuestion = 0;
+            let userAnswers = new Array(quizData.length).fill(null);
+            let timerInterval;
+            let timeLeft = 50 * 60; 
+            let studentName = "";
+
+            const startScreen = document.getElementById('start-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const resultScreen = document.getElementById('result-screen');
+            const startBtn = document.getElementById('start-btn');
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const questionCounter = document.getElementById('question-counter');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const timeDisplay = document.getElementById('time-display');
+            const timerBox = document.getElementById('timer-box');
+            const paletteModal = document.getElementById('palette-modal');
+            const paletteGrid = document.getElementById('palette-grid');
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function randomizeQuiz() {
+                shuffleArray(quizData);
+                quizData.forEach(q => {
+                    const correctText = q.options[q.answer];
+                    shuffleArray(q.options);
+                    q.answer = q.options.indexOf(correctText);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                randomizeQuiz();
+                if (startBtn) {
+                    startBtn.addEventListener('click', startQuiz);
+                }
+                buildPalette();
+            });
+
+            function startQuiz() {
+                const nameInput = document.getElementById('student-name').value.trim();
+                const errorMsg = document.getElementById('name-error');
+                
+                if(nameInput.length < 3) {
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
+                
+                errorMsg.classList.add('hidden');
+                studentName = nameInput;
+
+                startScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                timerBox.classList.remove('hidden');
+                startTimer();
+                loadQuestion();
+            }
+
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        finishQuiz();
+                        return;
+                    }
+                    timeLeft--;
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            function buildPalette() {
+                paletteGrid.innerHTML = '';
+                for (let i = 0; i < quizData.length; i++) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = i + 1;
+                    btn.className = `w-7 h-7 rounded text-xs font-bold border flex items-center justify-center transition ${
+                        userAnswers[i] !== null ? 'bg-teal-100 border-teal-400 text-teal-700' : 'bg-white border-slate-300 text-slate-700'
+                    }`;
+                    btn.onclick = () => jumpToQuestion(i);
+                    paletteGrid.appendChild(btn);
+                }
+            }
+
+            function updatePaletteStyles() {
+                const buttons = paletteGrid.children;
+                for (let i = 0; i < buttons.length; i++) {
+                    if (i === currentQuestion) {
+                        buttons[i].className = `w-7 h-7 rounded text-xs font-bold border-2 border-teal-600 bg-teal-600 text-white flex items-center justify-center`;
+                    } else if (userAnswers[i] !== null) {
+                        buttons[i].className = `w-7 h-7 rounded text-xs font-bold border border-teal-400 bg-teal-100 text-teal-700 flex items-center justify-center`;
+                    } else {
+                        buttons[i].className = `w-7 h-7 rounded text-xs font-bold border border-slate-300 bg-white text-slate-700 flex items-center justify-center`;
+                    }
+                }
+            }
+
+            function togglePalette() {
+                paletteModal.classList.toggle('hidden');
+            }
+
+            function jumpToQuestion(index) {
+                currentQuestion = index;
+                paletteModal.classList.add('hidden');
+                loadQuestion();
+            }
+
+            function loadQuestion() {
+                const q = quizData[currentQuestion];
+                questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
+                questionCounter.textContent = `Savol: ${currentQuestion + 1} / ${quizData.length}`;
+                
+                optionsContainer.innerHTML = '';
+
+                q.options.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `option-btn w-full text-left p-3.5 rounded-xl border border-slate-200 font-medium text-slate-700 bg-white shadow-sm`;
+                    btn.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+                    
+                    if (userAnswers[currentQuestion] === index) {
+                        btn.className += ` bg-teal-100 border-teal-500 text-teal-800 font-bold`;
+                    }
+                    
+                    btn.onclick = () => selectAnswer(index);
+                    optionsContainer.appendChild(btn);
+                });
+
+                prevBtn.disabled = currentQuestion === 0;
+                nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'Natijani ko‘rish 🏁' : 'Keyingi →';
+                updatePaletteStyles();
+            }
+
+            function selectAnswer(selectedIndex) {
+                userAnswers[currentQuestion] = selectedIndex;
+                const buttons = optionsContainer.children;
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].className = `option-btn w-full text-left p-3.5 rounded-xl border border-slate-200 font-medium text-slate-700 bg-white shadow-sm`;
+                    if (i === selectedIndex) {
+                        buttons[i].className += ` bg-teal-100 border-teal-500 text-teal-800 font-bold`;
+                    }
+                }
+                updatePaletteStyles();
+            }
+
+            function nextQuestion() {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }
+
+            function prevQuestion() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    loadQuestion();
+                }
+            }
+
+            function confirmFinish() {
+                if (confirm("Haqiqatan ham testni yakunlamoqchimisiz?")) {
+                    finishQuiz();
+                }
+            }
+
+            function finishQuiz() {
+                clearInterval(timerInterval);
+                quizScreen.classList.add('hidden');
+                timerBox.classList.add('hidden');
+                resultScreen.classList.remove('hidden');
+                
+                let correctCount = 0;
+                let attemptedCount = 0;
+                for(let i=0; i<quizData.length; i++) {
+                    if(userAnswers[i] !== null) {
+                        attemptedCount++;
+                        if(userAnswers[i] === quizData[i].answer) {
+                            correctCount++;
+                        }
+                    }
+                }
+                
+                let incorrectCount = attemptedCount - correctCount;
+                let unansweredCount = quizData.length - attemptedCount;
+                let percentage = Math.round((correctCount / quizData.length) * 100);
+
+                document.getElementById('res-student-name').textContent = studentName;
+                document.getElementById('res-total').textContent = quizData.length;
+                document.getElementById('res-attempted').textContent = attemptedCount;
+                document.getElementById('res-correct').textContent = correctCount;
+                document.getElementById('res-incorrect').textContent = incorrectCount;
+                document.getElementById('res-unanswered').textContent = unansweredCount;
+                document.getElementById('final-percentage').textContent = `O'zlashtirish foizi: ${percentage}%`;
+
+                sendToTelegram(studentName, correctCount, incorrectCount, unansweredCount, percentage);
+            }
+
+            // YANGI QO'SHILGAN FUNKSIYA: Batafsil javoblarni ko'rish
+            function toggleReview() {
+                const reviewContainer = document.getElementById('review-container');
+                const btn = document.getElementById('toggle-review-btn');
+                
+                if (reviewContainer.classList.contains('hidden')) {
+                    reviewContainer.classList.remove('hidden');
+                    btn.innerHTML = "Javoblarni yashirish ⬆️";
+                    buildReview();
+                } else {
+                    reviewContainer.classList.add('hidden');
+                    btn.innerHTML = "Batafsil javoblarni ko'rish 📄";
+                }
+            }
+
+            function buildReview() {
+                const container = document.getElementById('review-container');
+                container.innerHTML = ''; // tozalash
+
+                quizData.forEach((q, index) => {
+                    const userAns = userAnswers[index];
+                    const correctAns = q.answer;
+                    
+                    const div = document.createElement('div');
+                    div.className = "p-3 border-b border-slate-100 last:border-0";
+                    
+                    let html = `<p class="font-bold text-[15px] text-slate-700 mb-2">${index + 1}. ${q.q}</p>`;
+                    html += `<p class="text-xs text-emerald-600 font-semibold mb-1">✅ To'g'ri javob: ${q.options[correctAns]}</p>`;
+                    
+                    if (userAns === null) {
+                        html += `<p class="text-xs text-slate-500 font-semibold mt-1">⚪ Sizning javobingiz: Belgilanmagan</p>`;
+                    } else if (userAns === correctAns) {
+                        html += `<p class="text-xs text-emerald-600 font-semibold mt-1">👤 Sizning javobingiz: ${q.options[userAns]} (To'g'ri)</p>`;
+                    } else {
+                        html += `<p class="text-xs text-rose-600 font-semibold mt-1">❌ Sizning javobingiz: ${q.options[userAns]} (Noto'g'ri)</p>`;
+                    }
+                    
+                    div.innerHTML = html;
+                    container.appendChild(div);
+                });
+            }
+
+            function sendToTelegram(name, correct, incorrect, unanswered, percentage) {
+                const text = `🎓 Stom Prof (A15 gacha): %0A👤 Talaba: <b>${name}</b> %0A✅ To'g'ri: ${correct} %0A❌ Noto'g'ri: ${incorrect} %0A⚪ Belgilanmagan: ${unanswered} %0A📊 Foiz: <b>${percentage}%</b>`;
+                const BOT_TOKEN = "9273368953:AAHal0mt4or4yWknum8DoLiJ1zDy4E-2RrQ"; 
+                const CHAT_ID = "840168462"; 
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}&parse_mode=html`;
+                
+                fetch(url, { mode: 'no-cors' }).catch(err => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            }
+
+            function closeApp() {
+                if (tg && tg.close) { tg.close(); } 
+                else { window.close(); }
+            }
+        </script>
+    </body>
+    </html>
+    
